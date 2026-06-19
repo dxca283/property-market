@@ -11,7 +11,7 @@ interface NavbarProps {
   variant?: "transparent" | "solid";
 }
 
-const navLinks = ["Home", "Properties", "Marketplace"];
+export const navLinks = ["Home", "Properties", "Marketplace"];
 
 const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
