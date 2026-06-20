@@ -1,6 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import Input from "../ui/Input";
+import Button from "../ui/Button";
+import { LuSend } from "react-icons/lu";
 
 interface InputValues {
   email: string;
@@ -36,7 +39,41 @@ const EmailForm = () => {
             <p className="text-text/60 ">Property Agent</p>
           </div>
         </div>
-        <div className="mt-8 space-y-4"></div>
+        <div className="mt-8 space-y-4">
+          <Input
+            onchange={handleChange}
+            id="contact-name"
+            label="Your name"
+            name="name"
+            value={values.name}
+          />
+          <Input
+            onchange={handleChange}
+            id="contact-email"
+            label="Your email"
+            name="email"
+            value={values.email}
+          />
+          <Input
+            onchange={handleChange}
+            id="contact-phone"
+            label="Your phone"
+            name="phone"
+            value={values.phone}
+          />
+          <Input
+            onchange={handleChange}
+            id="contact-message"
+            label="Your message"
+            name="message"
+            as="textarea"
+            value={values.message}
+          />
+          
+        </div>
+        <Button icon={<LuSend />} iconPosition="right" className="mt-3" fullwidth>
+          Send email
+        </Button>
       </div>
     </div>
   );
