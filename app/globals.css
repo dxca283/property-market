@@ -5,5 +5,14 @@
   --color-secondary: #0f172a;
   --color-background: #f8fafc;
   --color-card: #ffffff;
-  --color-text: #111827
+  --color-text: #111827;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

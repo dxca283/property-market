@@ -6,6 +6,8 @@ import { FaHome } from "react-icons/fa";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { useAuthStore } from "@/store/useAuthStore";
+import useCreatePropertyModal from "@/store/usePropertyStore";
 
 interface NavbarProps {
   variant?: "transparent" | "solid";
@@ -15,6 +17,8 @@ export const navLinks = ["Home", "Properties", "Marketplace"];
 
 const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {openLogin} = useAuthStore();
+  const {onOpen:openCreateProperty} = useCreatePropertyModal();
 
   const isTransparent = variant === "transparent";
 
@@ -53,8 +57,8 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
           {/* Desktop buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="outline">Login</Button>
-            <Button icon={<FaHome />} iconPosition="left" variant="outline">
+            <Button variant="outline" onClick={openLogin}>Login</Button>
+            <Button icon={<FaHome />} onClick={openCreateProperty} iconPosition="left" variant="outline">
               Add Property
             </Button>
           </div>
@@ -83,7 +87,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 </Link>
               ))}
               <div className="flex flex-col gap-3 mt-4 ">
-                <Button variant="outline">Login</Button>
+                <Button variant="outline" onClick={openLogin}>Login</Button>
                 <Button icon={<FaHome />} iconPosition="left" variant="outline">
                   Add Property
                 </Button>
