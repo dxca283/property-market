@@ -6,12 +6,16 @@ import { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { FcGoogle } from "react-icons/fc";
+import z from "zod";
+import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 type RegisterErrors = Partial<Record<keyof RegisterValues, string>>;
 
 const RegisterModal = () => {
   const { openLogin, closeRegister, isRegisterOpen } = useAuthStore();
-
+  const router = useRouter();
   const [values, setValues] = useState<RegisterValues>({
     name: "",
     email: "",
@@ -26,22 +30,67 @@ const RegisterModal = () => {
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
 
     const validation = registerSchema.safeParse(values);
+
     if (!validation.success) {
       setLoading(false);
-      setErrors(validation.error.flatten().fieldErrors as RegisterErrors);
+
+      const tree = z.treeifyError(validation.error);
+
+      setErrors({
+        name: tree.properties?.name?.errors?.[0],
+        email: tree.properties?.email?.errors?.[0],
+        password: tree.properties?.password?.errors?.[0],
+      });
       return;
     }
 
-    // Register the user
+    // Register user
+    try {
+      setLoading(true);
+
+      const { error } = await authClient.signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        toast.error(error.message as string);
+        return;
+      }
+      toast.success("Account created successfully");
+      closeRegister();
+      setValues((prev) => ({
+        ...prev,
+        name: "",
+        email: "",
+        password: "",
+      }));
+      router.refresh();
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Modal title="Register" onClose={closeRegister} isOpen={isRegisterOpen}>
+      <div className="mb-6 space-y-1">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          Welcome to Property Marketplace
+        </h2>
+        <p className="text-gray-600 text-sm">
+          Create your account to get started
+        </p>
+      </div>
       <form onSubmit={handleSubmit} className="space-y-8">
         <Input
           id="register-name"
