@@ -10,6 +10,7 @@ import z from "zod";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { signinWithGoogle } from "@/services/SignInWithGoogle";
 
 type LoginError = Partial<Record<keyof LoginValues, string>>;
 
@@ -125,6 +126,7 @@ const LoginModal = () => {
         variant="outline"
         fullwidth
         disabled={loading}
+        onClick={signinWithGoogle}
       >
         Continue with Google
       </Button>

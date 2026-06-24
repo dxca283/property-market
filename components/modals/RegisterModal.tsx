@@ -10,6 +10,7 @@ import z from "zod";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { signinWithGoogle } from "@/services/SignInWithGoogle";
 
 type RegisterErrors = Partial<Record<keyof RegisterValues, string>>;
 
@@ -139,6 +140,7 @@ const RegisterModal = () => {
         variant="outline"
         fullwidth
         disabled={loading}
+        onClick={signinWithGoogle}
       >
         Continue with Google
       </Button>

@@ -23,13 +23,13 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
         {/* top badges */}
         <div className="absolute left-5 top-5 z-20 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-primary">
-          {property.status === "rent" ? "For rent" : "For sale"}
+          {property.listingType === "rent" ? "For rent" : "For sale"}
         </div>
         {/* content card */}
         <div className="absolute bottom-5 left-5 right-5 z-20 rounded-[29px] border border-white/10 bg-white/10 p-5 backdrop-blur-2xl">
           <div className="flex items-start justify-between gap-4">
             <div>
-              {property.status === "rent" ? (
+              {property.listingType === "rent" ? (
                 <h3 className="text-3xl font-bold text-white flex items-center">
                   {property.price.toLocaleString()}
                   <span className="text-sm text-white/60">/Month</span>
@@ -43,7 +43,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
 
             <div className="rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white">
-              {property.type}
+              {property.propertyType}
             </div>
           </div>
           <h2 className="mt-5 text-2xl font-bold text-white">

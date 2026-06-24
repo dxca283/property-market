@@ -8,6 +8,9 @@ import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAuthStore } from "@/store/useAuthStore";
 import useCreatePropertyModal from "@/store/usePropertyStore";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface NavbarProps {
   variant?: "transparent" | "solid";
@@ -16,12 +19,18 @@ interface NavbarProps {
 export const navLinks = ["Home", "Properties", "Marketplace"];
 
 const Navbar = ({ variant = "transparent" }: NavbarProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const {openLogin} = useAuthStore();
-  const {onOpen:openCreateProperty} = useCreatePropertyModal();
+  const { openLogin } = useAuthStore();
+  const { onOpen: openCreateProperty } = useCreatePropertyModal();
+  const { data: session, isPending } = authClient.useSession();
 
   const isTransparent = variant === "transparent";
-
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.refresh();
+    toast.success("Logout successfully");
+  };
   return (
     <section
       className={`top-0 left-0 z-50 w-full 
@@ -57,10 +66,26 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
           {/* Desktop buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="outline" onClick={openLogin}>Login</Button>
-            <Button icon={<FaHome />} onClick={openCreateProperty} iconPosition="left" variant="outline">
-              Add Property
-            </Button>
+            {session ? (
+              <Button variant="outline" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={openLogin}>
+                Login
+              </Button>
+            )}
+
+            {!isPending && session && (
+              <Button
+                icon={<FaHome />}
+                onClick={openCreateProperty}
+                iconPosition="left"
+                variant="outline"
+              >
+                Add Property
+              </Button>
+            )}
           </div>
 
           {/*mobile menu button */}
@@ -87,10 +112,25 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 </Link>
               ))}
               <div className="flex flex-col gap-3 mt-4 ">
-                <Button variant="outline" onClick={openLogin}>Login</Button>
-                <Button icon={<FaHome />} iconPosition="left" variant="outline">
-                  Add Property
-                </Button>
+                {session ? (
+                  <Button variant="outline" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={openLogin}>
+                    Login
+                  </Button>
+                )}
+                {!isPending && session && (
+                  <Button
+                    icon={<FaHome />}
+                    onClick={openCreateProperty}
+                    iconPosition="left"
+                    variant="outline"
+                  >
+                    Add Property
+                  </Button>
+                )}
               </div>
             </div>
           </div>

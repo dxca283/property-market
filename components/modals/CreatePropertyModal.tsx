@@ -8,6 +8,9 @@ import PropertyTypeCard from "../properties/PropertyTypeCard";
 import Input from "../ui/Input";
 import Counter from "../properties/Counter";
 import ImageUpload from "../properties/ImageUpload";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const STEPS = {
   TYPE: 0,
@@ -19,6 +22,7 @@ const STEPS = {
 };
 
 const CreatePropertyModal = () => {
+  const router = useRouter();
   const { isOpen, onClose } = useCreatePropertyModal();
   const [step, setStep] = useState(STEPS.TYPE);
   const [loading, setLoading] = useState(false);
@@ -59,7 +63,58 @@ const CreatePropertyModal = () => {
     setPreview(URL.createObjectURL(file));
   };
 
-  const createListing = () => {};
+  const createListing = async () => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("price", price.toString());
+      formData.append("location", location);
+      formData.append("area", area);
+      formData.append("address", address);
+      formData.append("description", description);
+      formData.append("bathrooms", bathrooms.toString());
+      formData.append("bedrooms", bedrooms.toString());
+      formData.append("propertyType", propertyType as string);
+      formData.append("listingType", listingType);
+      formData.append("parkingSpaces", parkingSpaces.toString());
+      if (image) {
+        formData.append("image", image)
+      }
+      await axios.post("/api/properties", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      })
+      toast.success("Property created successfully")
+      router.replace("/properties");
+      handleClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message || "Something went wrong");
+        return;
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleClose = () => {
+    setStep(STEPS.TYPE)
+    setPropertyType(null)
+    setLocation("")
+    setAddress("")
+    setBedrooms(1)
+    setBathrooms(1)
+    setParkingSpaces(0)
+    setArea("")
+    setTitle("")
+    setDescription("")
+    setImage(null)
+    setPreview(null)
+    setListingType("sale")
+    setPrice("")
+    onClose();
+  }
   return (
     <Modal title="Create a new listing" isOpen={isOpen} onClose={onClose}>
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500">

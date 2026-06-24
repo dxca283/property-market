@@ -11,7 +11,9 @@
   "dependencies": {
     "@prisma/adapter-neon": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "axios": "^1.18.1",
     "better-auth": "^1.6.20",
+    "cloudinary": "^2.10.0",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
     "next": "16.2.9",
