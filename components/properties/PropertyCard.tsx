@@ -1,3 +1,4 @@
+import { Property } from "@/types/property";
 import Image from "next/image";
 import Link from "next/link";
 

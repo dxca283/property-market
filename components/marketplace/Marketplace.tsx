@@ -1,6 +1,7 @@
 import { getProperties } from "@/server-actions/getProperties";
 import EmptyState from "../ui/EmptyState";
 import PropertyCard from "../properties/PropertyCard";
+import { Property } from "@/types/property";
 
 interface MarketPlceProps {
   searchParams: {

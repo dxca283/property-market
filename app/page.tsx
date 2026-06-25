@@ -2,7 +2,7 @@ import RecentProperty from "@/components/home/RecentProperty";
 import SearchBox from "@/components/home/SearchBox";
 import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
-import Image from "next/image";
+
 
 export default function Home() {
   return (

@@ -131,7 +131,7 @@ const LoginModal = () => {
         Continue with Google
       </Button>
       <p className="text-gray-400 text-center text-sm mt-6">
-        Don't have an accout?{" "}
+        Don&apos;t have an accout?
         <span
           onClick={openRegister}
           className="text-primary hover:underline font-semibold cursor-pointer"

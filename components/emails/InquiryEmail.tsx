@@ -7,7 +7,7 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
+
   Preview,
   Section,
   Text,
@@ -32,7 +32,7 @@ export const InquiryEmail = ({
   senderName,
   senderPhone,
   message,
-  ownerName,
+//   ownerName,
   ownerEmail,
   propertyTitle,
   propertyPrice,
@@ -91,7 +91,7 @@ export const InquiryEmail = ({
             {/* User Message */}
             <Section className="mt-[24px] border-l-4 border-emerald-600 bg-emerald-50/50 p-6 rounded-r-lg">
               <Text className="m-0 text-slate-800 text-[15px] leading-relaxed italic">
-                "{message}"
+                {message}
               </Text>
             </Section>
 

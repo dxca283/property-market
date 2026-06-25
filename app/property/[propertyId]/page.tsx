@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import { FaMapMarkerAlt, FaRulerCombined } from "react-icons/fa";
 import { LuBath, LuBedDouble } from "react-icons/lu";
 
-export const formatPrice = (price: Number | string) => {
+export const formatPrice = (price: number | string) => {
   return Number(price).toLocaleString();
 };
 

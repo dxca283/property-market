@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import CardSkeleton from "../skeletons/CardSkeleton";
 
 const RecentProperty = async () => {
-  const properties = await getRecentProperties();
   return (
     <section className="py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
