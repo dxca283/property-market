@@ -2,9 +2,7 @@ import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
 import PropertyCard from "@/components/properties/PropertyCard";
 import CardSkeleton from "@/components/skeletons/CardSkeleton";
-import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
-import { properties } from "@/contants/dummyProperties";
 import { getUserProperties } from "@/server-actions/getUserProperties";
 import { Suspense } from "react";
 

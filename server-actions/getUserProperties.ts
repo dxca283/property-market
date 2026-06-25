@@ -1,6 +1,5 @@
 "use server";
 
-import axios from "axios";
 import { getCurrentUser } from "./getCurrentUser";
 import { prisma } from "@/database/db";
 

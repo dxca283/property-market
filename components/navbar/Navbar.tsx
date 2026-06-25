@@ -56,7 +56,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             {navLinks.map((link) => (
               <Link
                 key={link}
-                href={link === "Home" ? "/" : `${link.toLowerCase()}`}
+                href={link === "Home" ? "/" : `/${link.toLowerCase()}`}
                 className={`text-sm font-medium transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}
               >
                 {link}
@@ -105,7 +105,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               {navLinks.map((link) => (
                 <Link
                   key={link}
-                  href={link === "Home" ? "/" : `${link.toLowerCase()}`}
+                  href={link === "Home" ? "/" : `/${link.toLowerCase()}`}
                   className={`transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}
                 >
                   {link}

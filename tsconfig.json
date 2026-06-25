@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "components/emails/InquiryEmail.tsx"  ],
   "exclude": ["node_modules"]
 }

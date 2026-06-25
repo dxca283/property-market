@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Modal from "./Modal";
 import useFilterStore from "@/store/useFilterStore";
 import { propertyTypes } from "@/contants/PropertyTypes";
 import PropertyTypeCard from "../properties/PropertyTypeCard";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const STEPS = {
   TYPE: 0,
@@ -13,14 +14,18 @@ const STEPS = {
   PRICE: 2,
 };
 
-const FilterModal = () => {
+const FilterModalContent = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { onClose, isOpen } = useFilterStore();
   const [step, setStep] = useState(STEPS.TYPE);
-  const [propertyType, setPropertyType] = useState<string | null>(null);
-  const [location, setLocation] = useState("");
-  const [address, setAddress] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [propertyType, setPropertyType] = useState(
+    searchParams.get("propertyType") || "",
+  );
+  const [location, setLocation] = useState(searchParams.get("location") || "");
+  const [address, setAddress] = useState(searchParams.get("address") || "");
+  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
 
   const stepTitle = () => {
     switch (step) {
@@ -34,7 +39,17 @@ const FilterModal = () => {
         return "";
     }
   };
-  const applyFilter = () => {};
+  const applyFilter = () => {
+    const params = new URLSearchParams();
+    if (location) params.set("location", location);
+    if (address) params.set("address", address);
+    if (propertyType) params.set("propertyType", propertyType);
+    if (minPrice) params.set("minPrice", minPrice);
+    if (maxPrice) params.set("maxPrice", maxPrice);
+    router.replace(`/marketplace?${params.toString()}`);
+    setStep(STEPS.TYPE);
+    onClose();
+  };
   return (
     <Modal title="Filter Properties" onClose={onClose} isOpen={isOpen}>
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500">
@@ -78,14 +93,26 @@ const FilterModal = () => {
         {step === STEPS.PRICE && (
           <div className="grid grid-cols-2 gap-4 ">
             <div>
-              <Input label="Min Price" name="min-price" type="number" value={minPrice} onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setMinPrice(e.target.value)
-              } />
+              <Input
+                label="Min Price"
+                name="min-price"
+                type="number"
+                value={minPrice}
+                onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setMinPrice(e.target.value)
+                }
+              />
             </div>
             <div>
-              <Input label="Max Price" name="max-price" type="number" value={maxPrice} onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setMaxPrice(e.target.value)
-              } />
+              <Input
+                label="Max Price"
+                name="max-price"
+                type="number"
+                value={maxPrice}
+                onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setMaxPrice(e.target.value)
+                }
+              />
             </div>
           </div>
         )}
@@ -111,6 +138,14 @@ const FilterModal = () => {
         </Button>
       </div>
     </Modal>
+  );
+};
+
+const FilterModal = () => {
+  return (
+    <Suspense>
+      <FilterModalContent />
+    </Suspense>
   );
 };
 
