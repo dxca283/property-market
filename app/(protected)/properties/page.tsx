@@ -6,6 +6,8 @@ import EmptyState from "@/components/ui/EmptyState";
 import { getUserProperties } from "@/server-actions/getUserProperties";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 const PropertiesPage = () => {
   return (
     <FrontEndLayout>
