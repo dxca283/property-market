@@ -9,12 +9,16 @@ import { FcGoogle } from "react-icons/fc";
 import z from "zod";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { signinWithGoogle } from "@/services/SignInWithGoogle";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 type LoginError = Partial<Record<keyof LoginValues, string>>;
 
 const LoginModal = () => {
+  const t = useTranslations("auth");
+  const t2 = useTranslations("toast");
+  const common = useTranslations("common");
   const { openRegister, closeLogin, isLoginOpen } = useAuthStore();
   const router = useRouter();
   const [values, setValues] = useState<LoginValues>({
@@ -61,7 +65,7 @@ const LoginModal = () => {
         toast.error(error.message as string);
         return;
       }
-      toast.success("Logged in successfully");
+      toast.success(t2("loginSuccess"));
       closeLogin();
       setValues((prev) => ({
         ...prev,
@@ -71,7 +75,7 @@ const LoginModal = () => {
       router.refresh();
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Something went wrong",
+        error instanceof Error ? error.message : t2("somethingWentWrong"),
       );
     } finally {
       setLoading(false);
@@ -82,16 +86,16 @@ const LoginModal = () => {
     <Modal title="Login" onClose={closeLogin} isOpen={isLoginOpen}>
       {/* header */}
       <div className="mb-6 space-y-1">
-        <h2 className="text-2xl font-semibold text-gray-900">Welcome back!</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">{t("welcomeBack")}</h2>
         <p className="text-sm text-gray-500">
-          Please enter your credentials to login
+          {t("loginDescription")}
         </p>
       </div>
       <form className="space-y-8" onSubmit={handleSubmit}>
         <Input
           id="login-email"
           name="email"
-          label="Email"
+          label={common("email")}
           value={values.email}
           onchange={handleChange}
           error={error.email}
@@ -100,14 +104,14 @@ const LoginModal = () => {
         <Input
           id="login-password"
           name="password"
-          label="Password"
+          label={common("password")}
           value={values.password}
           onchange={handleChange}
           error={error.password}
           disabled={loading}
         />
         <Button fullwidth loading={loading} type="submit">
-          Login
+          {t("login")}
         </Button>
       </form>
       {/* divider */}
@@ -128,15 +132,15 @@ const LoginModal = () => {
         disabled={loading}
         onClick={signinWithGoogle}
       >
-        Continue with Google
+        {t("continueWithGoogle")}
       </Button>
       <p className="text-gray-400 text-center text-sm mt-6">
-        Don&apos;t have an accout?
+        {t("dontHaveAccount")}
         <span
           onClick={openRegister}
           className="text-primary hover:underline font-semibold cursor-pointer"
         >
-          Sign up
+          {t("signUp")}
         </span>
       </p>
     </Modal>

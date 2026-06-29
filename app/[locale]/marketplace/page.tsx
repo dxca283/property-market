@@ -3,6 +3,7 @@ import FilterButton from "@/components/marketplace/FilterButton";
 import MarketPlace from "@/components/marketplace/Marketplace";
 import Navbar from "@/components/navbar/Navbar";
 import CardSkeleton from "@/components/skeletons/CardSkeleton";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 type MarketplaceProps = {
@@ -17,13 +18,15 @@ type MarketplaceProps = {
 };
 
 const Marketplace = async ({ searchParams }: MarketplaceProps) => {
+  const t = await getTranslations('marketplace');
+
   const params = await searchParams;
   return (
     <FrontEndLayout>
       <Navbar variant="solid" />
       <div className="mx-auto max-w-7xl p-6 lg:px-12 w-full">
         <div className="flex justify-between">
-          <h2 className="text-2xl font-bold text-text md:text-3xl">Explore</h2>
+          <h2 className="text-2xl font-bold text-text md:text-3xl">{t('explore')}</h2>
           <FilterButton />
         </div>
         <Suspense fallback={<CardSkeleton />}>

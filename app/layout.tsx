@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import RegisterModal from "@/components/modals/RegisterModal";
-import LoginModal from "@/components/modals/LoginModal";
-import CreatePropertyModal from "@/components/modals/CreatePropertyModal";
-import FilterModal from "@/components/modals/FilterModal";
-import { Toaster } from "react-hot-toast";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-poppins",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -20,18 +18,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={`${poppins.className} h-full antialiased`}>
+    <html lang="en" className={cn("h-full", "antialiased", poppins.className, "font-sans", inter.variable)}>
       <body className="min-h-full flex flex-col bg-background">
         {children}
-        <RegisterModal />
-        <LoginModal />
-        <CreatePropertyModal />
-        <FilterModal />
-        <Toaster />
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { TbPhotoPlus } from "react-icons/tb";
 
@@ -6,12 +7,13 @@ interface ImageUploadProps {
   onChange: (file: File) => void;
 }
 
-const ImageUpload = ({ preview, onChange }: ImageUploadProps) => {
+const ImageUpload = async ({ preview, onChange }: ImageUploadProps) => {
+  const t = await getTranslations("property")
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     onChange(file);
-  };
+  }; 
   return (
     <div className="relative w-full">
       <label
@@ -21,8 +23,8 @@ const ImageUpload = ({ preview, onChange }: ImageUploadProps) => {
         {!preview && (
           <>
             <TbPhotoPlus size={36} />
-            <p className="font-medium">Click to upload</p>
-            <p className="text-sm">Upload one image</p>
+            <p className="font-medium">{t("clickToUpload")}</p>
+            <p className="text-sm">{t("uploadOneImage")}</p>
           </>
         )}
         {preview && (

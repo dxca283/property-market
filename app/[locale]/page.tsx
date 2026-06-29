@@ -2,9 +2,10 @@ import RecentProperty from "@/components/home/RecentProperty";
 import SearchBox from "@/components/home/SearchBox";
 import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
+import { getTranslations } from "next-intl/server";
 
-
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations("home");
   return (
     <FrontEndLayout>
       <Navbar />
@@ -22,18 +23,16 @@ export default function Home() {
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 backdrop-blur-2xl">
                 <div className="w-2 h-2 rounded-full bg-primary " />
                 <span className="text-sm font-medium tracking-wide text-white">
-                  Premium Real Property Marketplace
+                  {t("premiumMarketplace")}
                 </span>
               </div>
 
               {/*Heading */}
               <h2 className="text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl">
-                Discover Your Dream Home
+                {t("heroTitle")}
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
-                Explore a curated selection of premium properties, from cozy
-                apartments to luxurious villas, and find the perfect space to
-                call your own.
+                {t("heroDescription")}
               </p>
               <SearchBox />
             </div>

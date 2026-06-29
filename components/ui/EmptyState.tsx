@@ -1,7 +1,8 @@
 "use client"
-import { useRouter } from "next/navigation";
 import { HiOutlineHomeModern } from "react-icons/hi2";
 import Button from "./Button";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 interface EmptyStateProps {
   title: string;
@@ -10,6 +11,7 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({ title, subtitle, filter }: EmptyStateProps) => {
+  const t = useTranslations("common")
   const router = useRouter();
 
   return (
@@ -27,7 +29,7 @@ const EmptyState = ({ title, subtitle, filter }: EmptyStateProps) => {
             variant="outline"
             onClick={() => router.replace("/marketplace")}
           >
-            Clear Filters
+            {t("clearFilters")}
           </Button>
         </div>
       )}

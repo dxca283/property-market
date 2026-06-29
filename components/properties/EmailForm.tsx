@@ -6,6 +6,7 @@ import Button from "../ui/Button";
 import { LuSend } from "react-icons/lu";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
 interface InputValues {
   email: string;
@@ -28,6 +29,9 @@ const EmailForm = ({
   propertyTitle,
   propertyPrice,
 }: EmailFormProps) => {
+  const t = useTranslations("toast");
+  const t2 = useTranslations("property");
+  const t3 = useTranslations("email");
   const [values, setValues] = useState<InputValues>({
     email: "",
     name: "",
@@ -42,7 +46,7 @@ const EmailForm = ({
   const sendMail = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!values.email || !values.name || !values.phone || !values.message) {
-      toast.error("All fields are required");
+      toast.error(t("allFieldsRequired"));
       return;
     }
     try {
@@ -57,7 +61,7 @@ const EmailForm = ({
         message: values.message,
         senderPhone: values.phone
       })
-      toast.success("Email sent successfully");
+      toast.success(t("emailSent"));
       setValues({
         email: "",
         name: "",
@@ -66,7 +70,7 @@ const EmailForm = ({
       })
     } catch (error) {
       console.error(error);
-      toast.error("Failed to send email");
+      toast.error(t("emailFailed"));
     } finally {
       setLoading(false);
     }
@@ -84,35 +88,35 @@ const EmailForm = ({
           />
           <div>
             <h3 className="text-xl font-bold text-text">{name}</h3>
-            <p className="text-text/60 ">Property Agent</p>
+            <p className="text-text/60 ">{t2("agent")}</p>
           </div>
         </div>
         <div className="mt-8 space-y-4">
           <Input
             onchange={handleChange}
             id="contact-name"
-            label="Your name"
+            label={t3("yourName")}
             name="name"
             value={values.name}
           />
           <Input
             onchange={handleChange}
             id="contact-email"
-            label="Your email"
+            label={t3("yourEmail")}
             name="email"
             value={values.email}
           />
           <Input
             onchange={handleChange}
             id="contact-phone"
-            label="Your phone"
+            label={t3("yourPhone")}
             name="phone"
             value={values.phone}
           />
           <Input
             onchange={handleChange}
             id="contact-message"
-            label="Your message"
+            label={t3("yourMessage")}
             name="message"
             as="textarea"
             value={values.message}
@@ -126,7 +130,7 @@ const EmailForm = ({
           fullwidth
 
         >
-          Send email
+          {t3("sendEmail")}
         </Button>
       </form>
     </div>

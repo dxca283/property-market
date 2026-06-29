@@ -1,4 +1,7 @@
-const PropertyPageSkeleton = () => {
+import { getTranslations } from "next-intl/server";
+
+const PropertyPageSkeleton = async () => {
+  const t = await getTranslations("property")
   return (
     <div className="animate-pulse">
       <div className="grid gap-10 lg:grid-cols-3">
@@ -17,7 +20,7 @@ const PropertyPageSkeleton = () => {
         </div>
         {/* right */}
         <div className="rounded-[28px] border border-black/5 bg-card p-6 shadow-sm">
-          <p className="text-sm text-gray-400">Property Price</p>
+          <p className="text-sm text-gray-400">{t("propertyPrice")}</p>
           <h2 className="mt-2 h-10 w-32 rounded bg-gray-200"></h2>
         </div>
       </div>

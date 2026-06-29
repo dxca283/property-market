@@ -2,6 +2,7 @@ import { getProperties } from "@/server-actions/getProperties";
 import EmptyState from "../ui/EmptyState";
 import PropertyCard from "../properties/PropertyCard";
 import { Property } from "@/types/property";
+import { getTranslations } from "next-intl/server";
 
 interface MarketPlceProps {
   searchParams: {
@@ -15,6 +16,7 @@ interface MarketPlceProps {
 }
 
 const MarketPlace = async ({ searchParams }: MarketPlceProps) => {
+  const t = await getTranslations("property")
   const properties: Property[] = await getProperties({
     search: searchParams.search,
     address: searchParams.address,
@@ -26,8 +28,8 @@ const MarketPlace = async ({ searchParams }: MarketPlceProps) => {
   if (properties.length === 0) {
     return (
       <EmptyState
-        title="No properties found"
-        subtitle="Try adjusting your search filters"
+        title={t("noProperties")}
+        subtitle={t("noPropertiesSubtitle")}
         filter
       />
     );

@@ -1,4 +1,4 @@
-import { formatPrice } from "@/app/property/[propertyId]/page";
+import { formatPrice } from "@/app/[locale]/property/[propertyId]/page";
 import {
   Body,
   Button,
@@ -7,7 +7,6 @@ import {
   Heading,
   Hr,
   Html,
-
   Preview,
   Section,
   Text,
@@ -15,6 +14,7 @@ import {
   Row,
   Column,
 } from "@react-email/components";
+import { getTranslations } from "next-intl/server";
 
 interface InquiryEmailProps {
   senderEmail: string;
@@ -27,17 +27,18 @@ interface InquiryEmailProps {
   propertyPrice: number;
 }
 
-export const InquiryEmail = ({
+export const InquiryEmail = async ({
   senderEmail,
   senderName,
   senderPhone,
   message,
-//   ownerName,
+  //   ownerName,
   ownerEmail,
   propertyTitle,
   propertyPrice,
 }: InquiryEmailProps) => {
   const previewText = `New Inquiry for ${propertyTitle} from ${senderName}`;
+  const t = await getTranslations("email");
 
   return (
     <Html>
@@ -62,10 +63,10 @@ export const InquiryEmail = ({
             {/* Subject Reference */}
             <Section>
               <Heading className="text-slate-900 text-[24px] font-semibold leading-[1.2] p-0 m-0">
-                New Property Inquiry
+                {t("newInquiry")}
               </Heading>
               <Text className="text-slate-500 text-[14px] mt-[8px] mb-0">
-                Ref: {propertyTitle}
+                {t("reference", { propertyTitle })}
               </Text>
             </Section>
 
@@ -75,16 +76,16 @@ export const InquiryEmail = ({
                 as="h3"
                 className="text-slate-900 text-[16px] font-semibold mt-0 mb-[16px]"
               >
-                Lead Details
+                {t("leadDetails")}
               </Heading>
               <Text className="m-0 text-slate-700 text-[15px] mb-[8px]">
-                <strong>Name:</strong> {senderName}
+                <strong>{t("name")}:</strong> {senderName}
               </Text>
               <Text className="m-0 text-slate-700 text-[15px] mb-[8px]">
-                <strong>Email:</strong> {senderEmail}
+                <strong>{t("email")}:</strong> {senderEmail}
               </Text>
               <Text className="m-0 text-slate-700 text-[15px] mb-[8px]">
-                <strong>Phone:</strong> {senderPhone}
+                <strong>{t("phone")}:</strong> {senderPhone}
               </Text>
             </Section>
 
@@ -101,7 +102,7 @@ export const InquiryEmail = ({
                 as="h3"
                 className="text-slate-900 text-[16px] font-semibold mt-0 mb-[16px]"
               >
-                Property Summary
+                {t("propertySummary")}
               </Heading>
               <Container className="border border-slate-200 rounded-lg overflow-hidden bg-white w-full">
                 <Row>
@@ -123,7 +124,7 @@ export const InquiryEmail = ({
                 className="bg-slate-900 rounded-lg text-white text-[15px] font-medium no-underline text-center px-8 py-4 w-full"
                 href={`mailto:${ownerEmail}?subject=Re: Inquiry for ${propertyTitle}`}
               >
-                Reply to Inquiry
+                {t("replyToInquiry")}
               </Button>
             </Section>
 
@@ -132,17 +133,15 @@ export const InquiryEmail = ({
             {/* Footer */}
             <Section className="text-center">
               <Text className="text-slate-400 text-[12px] leading-relaxed m-0">
-                This email was sent from LuxeEstate. You are receiving this
-                because your property is listed on our platform or you are an
-                assigned agent.
+                {t("emailFooter")}
               </Text>
               <Text className="text-slate-400 text-[12px] leading-relaxed mt-[8px] mb-0">
                 <a href="#" className="text-emerald-600 underline">
-                  Privacy Policy
+                  {t("privacyPolicy")}
                 </a>{" "}
                 &bull;{" "}
                 <a href="#" className="text-emerald-600 underline">
-                  Unsubscribe
+                  {t("unsubscribe")}
                 </a>
               </Text>
             </Section>
