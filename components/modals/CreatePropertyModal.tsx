@@ -10,7 +10,8 @@ import Counter from "../properties/Counter";
 import ImageUpload from "../properties/ImageUpload";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 const STEPS = {
   TYPE: 0,
@@ -22,6 +23,10 @@ const STEPS = {
 };
 
 const CreatePropertyModal = () => {
+  const t = useTranslations("property");
+  const t2 = useTranslations("modalType");
+  const t3 = useTranslations("toast");
+  const common = useTranslations("common");
   const router = useRouter();
   const { isOpen, onClose } = useCreatePropertyModal();
   const [step, setStep] = useState(STEPS.TYPE);
@@ -43,17 +48,17 @@ const CreatePropertyModal = () => {
   const stepTitle = () => {
     switch (step) {
       case STEPS.TYPE:
-        return "Select property type";
+        return t2("selectType");
       case STEPS.LOCATION:
-        return "Enter location";
+        return t2("selectLocation");
       case STEPS.DETAILS:
-        return "Enter details";
+        return t2("enterDetails");
       case STEPS.FEATURES:
-        return "Enter features";
+        return t2("enterFeatures");
       case STEPS.PRICE:
-        return "Enter price";
+        return t2("enterPrice");
       case STEPS.IMAGES:
-        return "Upload property images";
+        return t2("uploadPropertyImages");
       default:
         return "";
     }
@@ -86,12 +91,12 @@ const CreatePropertyModal = () => {
           "Content-Type": "multipart/form-data",
         }
       })
-      toast.success("Property created successfully")
+      toast.success(t3("propertyCreated"));
       router.replace("/properties");
       handleClose();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message || "Something went wrong");
+        toast.error(error.response?.data.message || t3("somethingWentWrong"));
         return;
       }
     } finally {
@@ -118,7 +123,7 @@ const CreatePropertyModal = () => {
   return (
     <Modal title="Create a new listing" isOpen={isOpen} onClose={onClose}>
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500">
-        <span>Step {step + 1} of 6</span>
+        <span>{t2("step", { current: step + 1, total: 6 })}</span>
         <span className="font-medium text-gray-700 ">{stepTitle()}</span>
       </div>
       <div className="min-h-55 rounded-xl text-gray-400 p-6 border border-dashed border-gray-300">
@@ -158,26 +163,26 @@ const CreatePropertyModal = () => {
         {step === STEPS.DETAILS && (
           <div className="space-y-4">
             <Counter
-              title="Bedrooms"
-              subTitle="How many bedrooms "
+              title={t("bedrooms")}
+              subTitle={t("bedroomsSubtitle")}
               value={bedrooms}
               onChange={setBedrooms}
             />
             <Counter
-              title="Bathrooms"
-              subTitle="How many bathrooms "
+              title={t("bathrooms")}
+              subTitle={t("bathroomsSubtitle")}
               value={bathrooms}
               onChange={setBathrooms}
             />
             <Counter
-              title="Parking spaces"
-              subTitle="How many parking spaces "
+              title={t("parkingSpaces")}
+              subTitle={t("parkingSpacesSubtitle")}
               value={parkingSpaces}
               onChange={setParkingSpaces}
             />
             <Input
               name="area"
-              label="Property Area (sqft)"
+              label={t("propertyArea")}
               type="number"
               value={area}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -190,7 +195,7 @@ const CreatePropertyModal = () => {
           <div className="space-y-6 ">
             <Input
               name="title"
-              label="Property title"
+              label={t("propertyTitle")}
               value={title}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setTitle(e.target.value)
@@ -199,7 +204,7 @@ const CreatePropertyModal = () => {
             <Input
               as="textarea"
               name="description"
-              label="Property Description"
+              label={t("propertyDescription")}
               value={description}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDescription(e.target.value)
@@ -219,12 +224,12 @@ const CreatePropertyModal = () => {
               }
               className="h-13 w-full rounded-2xl border border-black/10 px-4"
             >
-              <option value="sale">For Sale</option>
-              <option value="rent">For Rent</option>
+              <option value="sale">{t("forSale")}</option>
+              <option value="rent">{t("forRent")}</option>
             </select>
             <Input
               name="price"
-              label={listingType === "sale" ? "Sale Price" : "Monthly Rent"}
+              label={listingType === "sale" ? t("salePrice") : t("monthlyRent")}
               type="number"
               value={price}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -242,7 +247,7 @@ const CreatePropertyModal = () => {
             fullwidth
             onClick={() => setStep((prev) => prev - 1)}
           >
-            Back
+            {common("back")}
           </Button>
         )}
         <Button
@@ -253,7 +258,7 @@ const CreatePropertyModal = () => {
           }
           loading={loading}
         >
-          {step === STEPS.PRICE ? "Create listing" : "Next"}
+          {step === STEPS.PRICE ? t("createListingButton") : common("next")}
         </Button>
       </div>
     </Modal>

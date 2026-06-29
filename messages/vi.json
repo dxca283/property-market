@@ -1,0 +1,155 @@
+{
+  "footer": {
+    "copyright": "Đã đăng ký bản quyền."
+  },
+  "home": {
+    "newListings": "Bất động sản mới",
+    "recentPropertiesTitle": "Khám Phá Những Bất Động Sản Mới Nhất",
+    "recentPropertiesDescription": "Khám phá bộ sưu tập những bất động sản nổi bật mới được cập nhật, được tuyển chọn dựa trên chất lượng, vị trí và tiềm năng đầu tư. Từ các căn hộ hiện đại giữa lòng thành phố đến những ngôi nhà yên bình ở vùng ngoại ô, ngôi nhà mơ ước của bạn đang chờ đón.",
+    "premiumMarketplace": "Nền tảng bất động sản cao cấp",
+
+    "heroTitle": "Khám phá ngôi nhà trong mơ của bạn",
+
+    "heroDescription": "Khám phá bộ sưu tập bất động sản cao cấp được tuyển chọn, từ những căn hộ ấm cúng đến các biệt thự sang trọng, và tìm không gian hoàn hảo dành cho bạn."
+  },
+  "navbar": {
+    "home": "Trang chủ",
+    "properties": "Bất động sản",
+    "marketplace": "Thị trường",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "addProperty": "Thêm bất động sản"
+  },
+  "search": {
+    "placeholder": "Tìm kiếm theo thành phố, khu vực hoặc địa chỉ",
+    "searchProperties": "Tìm kiếm bất động sản"
+  },
+  "filter": {
+    "filter": "Bộ lọc",
+    "title": "Lọc bất động sản",
+    "step": "Bước {current}/{total}",
+    "selectPropertyType": "Chọn loại bất động sản",
+    "selectLocation": "Chọn vị trí",
+    "selectPriceRange": "Chọn khoảng giá",
+    "minPrice": "Giá tối thiểu",
+    "maxPrice": "Giá tối đa",
+    "applyFilter": "Áp dụng bộ lọc",
+    "tryAdjustingSearchFilters": "Thử điều chỉnh bộ lọc"
+  },
+  "common": {
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "or": "Hoặc",
+    "address": "Địa chỉ",
+    "location": "Vị trí",
+    "password": "Mật khẩu",
+    "email": "Email",
+    "loading": "Đang tải...",
+    "clearFilters": "Xóa bộ lọc"
+  },
+  "property": {
+    "createListing": "Tạo tin đăng mới",
+    "step": "Bước {current}/{total}",
+    "selectPropertyType": "Chọn loại bất động sản",
+    "enterLocation": "Nhập vị trí",
+    "enterDetails": "Nhập thông tin chi tiết",
+    "enterFeatures": "Nhập đặc điểm",
+    "enterPrice": "Nhập giá",
+    "uploadPropertyImages": "Tải ảnh bất động sản",
+    "bedrooms": "Phòng ngủ",
+    "bedroomsSubtitle": "Có bao nhiêu phòng ngủ?",
+    "bathrooms": "Phòng tắm",
+    "bathroomsSubtitle": "Có bao nhiêu phòng tắm?",
+    "parkingSpaces": "Chỗ đậu xe",
+    "parkingSpacesSubtitle": "Có bao nhiêu chỗ đậu xe?",
+    "propertyArea": "Diện tích (ft²)",
+    "propertyTitle": "Tiêu đề bất động sản",
+    "propertyDescription": "Mô tả bất động sản",
+    "forSale": "Bán",
+    "forRent": "Cho thuê",
+    "salePrice": "Giá bán",
+    "monthlyRent": "Giá thuê mỗi tháng",
+    "createListingButton": "Đăng tin",
+    "agent": "Môi giới bất động sản",
+    "clickToUpload": "Nhấn để tải ảnh lên",
+    "uploadOneImage": "Tải lên một hình ảnh",
+    "imagePreview": "Xem trước hình ảnh",
+    "month": "Tháng",
+    "beds": "Phòng ngủ",
+    "sqft": "m²",
+    "propertyPrice": "Giá bất động sản",
+    "aboutProperty": "Về bất động sản này",
+    "rooms": "Phòng",
+    "noProperties": "Không tìm thấy bất động sản",
+    "noPropertiesSubtitle": "Không có bất động sản phù hợp với bộ lọc của bạn."
+  },
+  "modalType": {
+    "selectType": "Chọn loại bất động sản",
+    "selectLocation": "Chọn vị trí",
+    "enterDetails": "Nhập thông tin chi tiết",
+    "enterFeatures": "Nhập đặc điểm",
+    "enterPrice": "Nhập giá",
+    "uploadPropertyImages": "Tải ảnh bất động sản",
+    "step": "Bước {current} / {total}"
+  },
+  "toast": {
+    "propertyCreated": "Đăng tin thành công",
+    "somethingWentWrong": "Đã xảy ra lỗi",
+    "loginSuccess": "Đăng nhập thành công",
+    "accountCreated": "Tạo tài khoản thành công",
+    "logoutSuccess": "Đăng xuất thành công",
+    "emailSent": "Gửi email thành công",
+    "emailFailed": "Gửi email thất bại",
+    "allFieldsRequired": "Vui lòng điền đầy đủ thông tin",
+    "invalidEmail": "Email không hợp lệ",
+    "passwordMin": "Mật khẩu phải có ít nhất 6 ký tự",
+    "nameMin": "Tên phải có ít nhất 3 ký tự"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "welcomeBack": "Chào mừng trở lại!",
+    "loginDescription": "Vui lòng nhập thông tin đăng nhập của bạn",
+    "continueWithGoogle": "Tiếp tục với Google",
+    "dontHaveAccount": "Chưa có tài khoản?",
+    "signUp": "Đăng ký",
+    "register": "Đăng ký",
+    "welcomePropertyMarketplace": "Chào mừng đến với Property Marketplace",
+    "registerDescription": "Tạo tài khoản để bắt đầu",
+    "fullName": "Họ và tên",
+    "createAccount": "Tạo tài khoản",
+    "alreadyHaveAccount": "Đã có tài khoản?",
+    "googleSignInFailed": "Đăng nhập bằng Google thất bại"
+  },
+  "email": {
+    "yourName": "Tên của bạn",
+    "yourEmail": "Email của bạn",
+    "yourPhone": "Số điện thoại",
+    "yourMessage": "Tin nhắn của bạn",
+    "sendEmail": "Gửi email",
+    "newInquiry": "Yêu cầu liên hệ bất động sản mới",
+    "reference": "Mã tham chiếu: {propertyTitle}",
+
+    "leadDetails": "Thông tin khách hàng",
+    "name": "Tên:",
+    "email": "Email:",
+    "phone": "Số điện thoại:",
+
+    "propertySummary": "Thông tin bất động sản",
+
+    "replyToInquiry": "Phản hồi yêu cầu",
+
+    "emailFooter": "Email này được gửi từ LuxeEstate. Bạn nhận được email này vì bất động sản của bạn đang được đăng trên nền tảng hoặc bạn là người được chỉ định quản lý.",
+
+    "privacyPolicy": "Chính sách bảo mật",
+    "unsubscribe": "Hủy đăng ký"
+  },
+  "validation": {
+    "allFieldsRequired": "Vui lòng điền đầy đủ thông tin",
+    "invalidEmail": "Email không hợp lệ",
+    "passwordMin": "Mật khẩu phải có ít nhất 6 ký tự",
+    "nameMin": "Tên phải có ít nhất 3 ký tự"
+  },
+  "marketplace": {
+    "explore": "Khám phá"
+  }
+}

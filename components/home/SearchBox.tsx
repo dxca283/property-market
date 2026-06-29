@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import Button from "../ui/Button";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 const SearchBox = () => {
+  const t = useTranslations("search");
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const handleSearch = () => {
@@ -17,10 +19,10 @@ const SearchBox = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           type="text"
-          placeholder="Search by city, neighborhood or address"
+          placeholder={t('placeholder')}
           className="px-5 py-4 h-14 w-full flex-1 rounded-2xl border border-white/10 bg-white/5 text-white placeholder:text-white/50 outline-none transition focus:border-primary/40"
         />
-        <Button onClick={handleSearch}>Search Properties</Button>
+        <Button onClick={handleSearch}>{t('searchProperties')}</Button>
       </div>
     </div>
   );

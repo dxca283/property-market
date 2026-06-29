@@ -9,12 +9,15 @@ import { FcGoogle } from "react-icons/fc";
 import z from "zod";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { signinWithGoogle } from "@/services/SignInWithGoogle";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 type RegisterErrors = Partial<Record<keyof RegisterValues, string>>;
 
 const RegisterModal = () => {
+  const t = useTranslations("auth");
+  const common = useTranslations("common");
   const { openLogin, closeRegister, isRegisterOpen } = useAuthStore();
   const router = useRouter();
   const [values, setValues] = useState<RegisterValues>({
@@ -86,17 +89,17 @@ const RegisterModal = () => {
     <Modal title="Register" onClose={closeRegister} isOpen={isRegisterOpen}>
       <div className="mb-6 space-y-1">
         <h2 className="text-2xl font-semibold text-gray-900">
-          Welcome to Property Marketplace
+          {t("welcomePropertyMarketplace")}
         </h2>
         <p className="text-gray-600 text-sm">
-          Create your account to get started
+          {t("registerDescription")}
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-8">
         <Input
           id="register-name"
           name="name"
-          label="Full Name"
+          label={t("fullName")}
           value={values.name}
           onchange={handleChange}
           error={errors.name}
@@ -105,7 +108,7 @@ const RegisterModal = () => {
         <Input
           id="register-email"
           name="email"
-          label="Email"
+          label={common("email")}
           value={values.email}
           onchange={handleChange}
           error={errors.email}
@@ -114,14 +117,14 @@ const RegisterModal = () => {
         <Input
           id="register-password"
           name="password"
-          label="Password"
+          label={common("password")}
           value={values.password}
           onchange={handleChange}
           error={errors.password}
           disabled={loading}
         />
         <Button type="submit" fullwidth loading={loading} disabled={loading}>
-          Create Account
+          {t("createAccount")}
         </Button>
       </form>
 
@@ -130,7 +133,7 @@ const RegisterModal = () => {
           <div className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-4 text-gray-500">Or</span>
+          <span className="bg-white px-4 text-gray-500">{common("or")}</span>
         </div>
       </div>
 
@@ -142,15 +145,15 @@ const RegisterModal = () => {
         disabled={loading}
         onClick={signinWithGoogle}
       >
-        Continue with Google
+        {t("continueWithGoogle")}
       </Button>
       <p className="text-gray-400 text-center text-sm mt-6">
-        Already have an account?{" "}
+        {t("alreadyHaveAccount")}{" "}
         <span
           onClick={openLogin}
           className="text-primary hover:underline font-semibold cursor-pointer"
         >
-          Login
+          {t("login")}
         </span>
       </p>
     </Modal>

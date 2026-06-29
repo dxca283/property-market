@@ -6,7 +6,9 @@ import { propertyTypes } from "@/contants/PropertyTypes";
 import PropertyTypeCard from "../properties/PropertyTypeCard";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 const STEPS = {
   TYPE: 0,
@@ -15,6 +17,9 @@ const STEPS = {
 };
 
 const FilterModalContent = () => {
+  const common = useTranslations("common");
+  const t = useTranslations("modalType");
+  const filter = useTranslations("filter");
   const router = useRouter();
   const searchParams = useSearchParams();
   const { onClose, isOpen } = useFilterStore();
@@ -30,11 +35,11 @@ const FilterModalContent = () => {
   const stepTitle = () => {
     switch (step) {
       case STEPS.TYPE:
-        return "Select property type";
+        return filter("selectPropertyType");
       case STEPS.LOCATION:
-        return "Select a location";
+        return filter("selectLocation");
       case STEPS.PRICE:
-        return "Select a price range";
+        return filter("selectPriceRange");
       default:
         return "";
     }
@@ -53,7 +58,7 @@ const FilterModalContent = () => {
   return (
     <Modal title="Filter Properties" onClose={onClose} isOpen={isOpen}>
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500">
-        <span>Step {step + 1} of 3</span>
+        <span>{t("step", { current: step + 1, total: 3 })}</span>
         <span className="font-medium text-gray-700 ">{stepTitle()}</span>
       </div>
       <div className="min-h-55 rounded-xl text-gray-400 p-6 border border-dashed border-gray-300">
@@ -74,7 +79,7 @@ const FilterModalContent = () => {
           <div className="space-y-6 w=full">
             <Input
               name="location"
-              label="Location"
+              label={common("location")}
               value={location}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setLocation(e.target.value)
@@ -82,7 +87,7 @@ const FilterModalContent = () => {
             />
             <Input
               name="address"
-              label="Address"
+              label={common("address")}
               value={address}
               onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setAddress(e.target.value)
@@ -94,7 +99,7 @@ const FilterModalContent = () => {
           <div className="grid grid-cols-2 gap-4 ">
             <div>
               <Input
-                label="Min Price"
+                label={filter("minPrice")}
                 name="min-price"
                 type="number"
                 value={minPrice}
@@ -105,7 +110,7 @@ const FilterModalContent = () => {
             </div>
             <div>
               <Input
-                label="Max Price"
+                label={filter("maxPrice")}
                 name="max-price"
                 type="number"
                 value={maxPrice}
@@ -124,7 +129,7 @@ const FilterModalContent = () => {
             fullwidth
             onClick={() => setStep((prev) => prev - 1)}
           >
-            Back
+            {common("back")}
           </Button>
         )}
         <Button
@@ -134,7 +139,7 @@ const FilterModalContent = () => {
             step < STEPS.PRICE ? setStep((prev) => prev + 1) : applyFilter()
           }
         >
-          {step === STEPS.PRICE ? "Apply filter" : "Next"}
+          {step === STEPS.PRICE ? filter("applyFilter") : common("next")}
         </Button>
       </div>
     </Modal>

@@ -1,0 +1,155 @@
+{
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "home": {
+    "newListings": "New Listings",
+    "recentPropertiesTitle": "Discover Recently Added Properties",
+    "recentPropertiesDescription": "Browse our latest collection of featured properties, carefully selected for their quality, location, and investment potential. From modern city apartments to serene countryside homes, your dream property awaits.",
+    "premiumMarketplace": "Premium Real Property Marketplace",
+
+    "heroTitle": "Discover Your Dream Home",
+
+    "heroDescription": "Explore a curated selection of premium properties, from cozy apartments to luxurious villas, and find the perfect space to call your own."
+  },
+  "navbar": {
+    "home": "Home",
+    "properties": "Properties",
+    "marketplace": "Marketplace",
+    "login": "Login",
+    "logout": "Logout",
+    "addProperty": "Add Property"
+  },
+  "search": {
+    "placeholder": "Search by city, neighborhood or address",
+    "searchProperties": "Search Properties"
+  },
+  "filter": {
+    "filter": "Filter",
+    "title": "Filter Properties",
+    "step": "Step {current} of {total}",
+    "selectPropertyType": "Select property type",
+    "selectLocation": "Select a location",
+    "selectPriceRange": "Select a price range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "applyFilter": "Apply Filter",
+    "tryAdjustingSearchFilters" : "Try adjusting search filters"
+  },
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "or": "Or",
+    "address": "Address",
+    "location": "Location",
+    "password": "Password",
+    "email": "Email",
+    "loading": "Loading...",
+    "clearFilters": "Clear Filters"
+  },
+  "property": {
+    "createListing": "Create a new listing",
+    "step": "Step {current} of {total}",
+    "selectPropertyType": "Select property type",
+    "enterLocation": "Enter location",
+    "enterDetails": "Enter details",
+    "enterFeatures": "Enter features",
+    "enterPrice": "Enter price",
+    "uploadPropertyImages": "Upload property images",
+    "bedrooms": "Bedrooms",
+    "bedroomsSubtitle": "How many bedrooms?",
+    "bathrooms": "Bathrooms",
+    "bathroomsSubtitle": "How many bathrooms?",
+    "parkingSpaces": "Parking spaces",
+    "parkingSpacesSubtitle": "How many parking spaces?",
+    "propertyArea": "Property Area (sqft)",
+    "propertyTitle": "Property title",
+    "propertyDescription": "Property Description",
+    "forSale": "For Sale",
+    "forRent": "For Rent",
+    "salePrice": "Sale Price",
+    "monthlyRent": "Monthly Rent",
+    "createListingButton": "Create listing",
+    "agent": "Property Agent",
+    "clickToUpload": "Click to upload",
+    "uploadOneImage": "Upload one image",
+    "imagePreview": "Image preview",
+    "month": "Month",
+    "beds": "Beds",
+    "sqft": "sqft",
+    "propertyPrice": "Property Price",
+    "aboutProperty": "About this property",
+    "rooms": "rooms",
+    "noProperties": "No properties found",
+    "noPropertiesSubtitle": "You have no properties"
+  },
+  "modalType": {
+    "selectType": "Select property type",
+    "selectLocation": "Select a location",
+    "enterDetails": "Enter details",
+    "enterFeatures": "Enter features",
+    "enterPrice": "Enter price",
+    "uploadPropertyImages": "Upload property images",
+    "step": "Step {current} of {total}"
+  },
+  "toast": {
+    "propertyCreated": "Property created successfully",
+    "somethingWentWrong": "Something went wrong",
+    "loginSuccess": "Logged in successfully",
+    "accountCreated": "Account created successfully",
+    "logoutSuccess": "Logout successfully",
+    "emailSent": "Email sent successfully",
+    "emailFailed": "Failed to send email",
+    "allFieldsRequired": "All fields are required",
+    "invalidEmail": "Invalid email",
+    "passwordMin": "Password must be at least 6 characters",
+    "nameMin": "Name must be at least 3 characters"
+  },
+  "auth": {
+    "login": "Login",
+    "welcomeBack": "Welcome back!",
+    "loginDescription": "Please enter your credentials to login",
+    "continueWithGoogle": "Continue with Google",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "register": "Register",
+    "welcomePropertyMarketplace": "Welcome to Property Marketplace",
+    "registerDescription": "Create your account to get started",
+    "fullName": "Full Name",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "googleSignInFailed": "Google sign in failed"
+  },
+  "email": {
+    "yourName": "Your name",
+    "yourEmail": "Your email",
+    "yourPhone": "Your phone",
+    "yourMessage": "Your message",
+    "sendEmail": "Send email",
+    "newInquiry": "New Property Inquiry",
+    "reference": "Ref: {propertyTitle}",
+
+    "leadDetails": "Lead Details",
+    "name": "Name:",
+    "email": "Email:",
+    "phone": "Phone:",
+
+    "propertySummary": "Property Summary",
+
+    "replyToInquiry": "Reply to Inquiry",
+
+    "emailFooter": "This email was sent from LuxeEstate. You are receiving this because your property is listed on our platform or you are an assigned agent.",
+
+    "privacyPolicy": "Privacy Policy",
+    "unsubscribe": "Unsubscribe"
+  },
+  "validation": {
+    "allFieldsRequired": "All fields are required",
+    "invalidEmail": "Invalid email",
+    "passwordMin": "Password must be at least 6 characters",
+    "nameMin": "Name must be at least 3 characters"
+  },
+  "marketplace": {
+    "explore": "Explore"
+  }
+}
