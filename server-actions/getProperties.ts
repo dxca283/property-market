@@ -1,32 +1,81 @@
-import axios from "axios";
+import { prisma } from "@/database/db";
 
 export interface GetPropertiesParams {
   search?: string;
   propertyType?: string;
   location?: string;
-  address?: string;
   minPrice?: number;
   maxPrice?: number;
+  address?: string;
 }
 
 export const getProperties = async (params: GetPropertiesParams) => {
-  try {
-    const {data} = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/properties`,
-      {
-        params: {
-          search: params?.search,
-          propertyType: params?.propertyType,
-          location: params?.location,
-          address: params?.address,
-          minPrice: params?.minPrice,
-          maxPrice: params?.maxPrice,
+  const properties = await prisma.property.findMany({
+    where: {
+      ...(params.propertyType && {
+        propertyType: params.propertyType,
+      }),
+
+      ...(params.location && {
+        location: {
+          contains: params.location,
+          mode: "insensitive",
         },
-      },
-    );
-    return data;
-    
-  } catch {
-    throw new Error("Failed to fetch properties");
-  }
+      }),
+      ...(params.address && {
+        address: {
+          contains: params.address,
+          mode: "insensitive",
+        },
+      }),
+
+      ...(params.search && {
+        OR: [
+          {
+            title: {
+              contains: params.search,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: params.search,
+              mode: "insensitive",
+            },
+          },
+          {
+            address: {
+              contains: params.search,
+              mode: "insensitive",
+            },
+          },
+          {
+            location: {
+              contains: params.search,
+              mode: "insensitive",
+            },
+          },
+        ],
+      }),
+
+      ...(params.minPrice || params.maxPrice
+        ? {
+            price: {
+              ...(params.minPrice && {
+                gte: Number(params.minPrice),
+              }),
+              ...(params.maxPrice && {
+                lte: Number(params.maxPrice),
+              }),
+            },
+          }
+        : {}),
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return properties;
 };

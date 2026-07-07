@@ -8,10 +8,9 @@ import PropertyTypeCard from "../properties/PropertyTypeCard";
 import Input from "../ui/Input";
 import Counter from "../properties/Counter";
 import ImageUpload from "../properties/ImageUpload";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { useCreateProperty } from "@/hooks/useCreateProperty";
 
 const STEPS = {
   TYPE: 0,
@@ -25,12 +24,11 @@ const STEPS = {
 const CreatePropertyModal = () => {
   const t = useTranslations("property");
   const t2 = useTranslations("modalType");
-  const t3 = useTranslations("toast");
   const common = useTranslations("common");
   const router = useRouter();
   const { isOpen, onClose } = useCreatePropertyModal();
   const [step, setStep] = useState(STEPS.TYPE);
-  const [loading, setLoading] = useState(false);
+  const { mutate: createProperty, isPending } = useCreateProperty();
   const [propertyType, setPropertyType] = useState<string | null>(null);
   const [location, setLocation] = useState("");
   const [address, setAddress] = useState("");
@@ -68,40 +66,28 @@ const CreatePropertyModal = () => {
     setPreview(URL.createObjectURL(file));
   };
 
-  const createListing = async () => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("price", price.toString());
-      formData.append("location", location);
-      formData.append("area", area);
-      formData.append("address", address);
-      formData.append("description", description);
-      formData.append("bathrooms", bathrooms.toString());
-      formData.append("bedrooms", bedrooms.toString());
-      formData.append("propertyType", propertyType as string);
-      formData.append("listingType", listingType);
-      formData.append("parkingSpaces", parkingSpaces.toString());
-      if (image) {
-        formData.append("image", image)
-      }
-      await axios.post("/api/properties", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }
-      })
-      toast.success(t3("propertyCreated"));
-      router.replace("/properties");
-      handleClose();
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message || t3("somethingWentWrong"));
-        return;
-      }
-    } finally {
-      setLoading(false);
+  const createListing = () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("price", price.toString());
+    formData.append("location", location);
+    formData.append("area", area);
+    formData.append("address", address);
+    formData.append("description", description);
+    formData.append("bathrooms", bathrooms.toString());
+    formData.append("bedrooms", bedrooms.toString());
+    formData.append("propertyType", propertyType as string);
+    formData.append("listingType", listingType);
+    formData.append("parkingSpaces", parkingSpaces.toString());
+    if (image) {
+      formData.append("image", image)
     }
+    createProperty(formData, {
+      onSuccess: () => {
+        router.replace("/properties");
+        handleClose();
+      }
+    });
   };
   const handleClose = () => {
     setStep(STEPS.TYPE)
@@ -256,7 +242,7 @@ const CreatePropertyModal = () => {
           onClick={() =>
             step < STEPS.PRICE ? setStep((prev) => prev + 1) : createListing()
           }
-          loading={loading}
+          loading={isPending}
         >
           {step === STEPS.PRICE ? t("createListingButton") : common("next")}
         </Button>

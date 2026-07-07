@@ -35,24 +35,40 @@ model Property {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId   String
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  wishLists WishList[]
 
   @@map("property")
 }
 
+model WishList {
+  id         String @id @default(cuid())
+  userId     String
+  propertyId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@map("wishlist")
+}
+
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
-
-  properties Property[]
+  wishLists     WishList[]
+  properties    Property[]
 
   @@unique([email])
   @@map("user")

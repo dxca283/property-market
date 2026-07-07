@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { TbPhotoPlus } from "react-icons/tb";
 
@@ -7,8 +8,8 @@ interface ImageUploadProps {
   onChange: (file: File) => void;
 }
 
-const ImageUpload = async ({ preview, onChange }: ImageUploadProps) => {
-  const t = await getTranslations("property")
+const ImageUpload =  ({ preview, onChange }: ImageUploadProps) => {
+  const t = useTranslations("property");
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "../ui/Button";
-import { FaHome } from "react-icons/fa";
+import { FaHeart, FaHome } from "react-icons/fa";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import LanguageSwitcher from "../language/LanguageSwitcher";
+import { useQueryClient } from "@tanstack/react-query";
 interface NavbarProps {
   variant?: "transparent" | "solid";
 }
@@ -38,10 +39,13 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const { openLogin } = useAuthStore();
   const { onOpen: openCreateProperty } = useCreatePropertyModal();
   const { data: session, isPending } = authClient.useSession();
-
+  const queryClient = useQueryClient();
   const isTransparent = variant === "transparent";
   const handleLogout = async () => {
     await authClient.signOut();
+    queryClient.removeQueries({
+      queryKey: ["wishlist"],
+    });
     router.refresh();
     toast.success(t2("logoutSuccess"));
   };
@@ -93,12 +97,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               </Button>
             )}
 
+            <Button
+              icon={<FaHeart />}
+              iconPosition="left"
+              variant="outline"
+              onClick={() => router.push("/wishlist")}
+              className="cursor-pointer"
+            />
             {!isPending && session && (
               <Button
                 icon={<FaHome />}
                 onClick={openCreateProperty}
                 iconPosition="left"
                 variant="outline"
+                className=""
               >
                 {t("addProperty")}
               </Button>
@@ -116,11 +128,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
         {/* Mobile menu */}
         {isOpen && (
           <div
-            className={`mt-4 rounded-3xl p-6 backdrop-blur-2xl lg:hidden ${
-              isTransparent
-                ? "border border-white/10 bg-secondary/95"
-                : "border border-black/5 bg-white"
-            }`}
+            className={`mt-4 rounded-3xl p-6 backdrop-blur-2xl lg:hidden ${isTransparent ? "border border-white/10 bg-secondary/95" : "border border-black/5 bg-secondary/90"}`}
           >
             <div className="flex flex-col gap-5 text-text">
               <div className="flex justify-end">
@@ -131,12 +139,21 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   key={item.href}
                   href={item.href}
                   className={`transition hover:text-primary ${
-                    isTransparent ? "text-white/80" : "text-text/70"
+                    isTransparent ? "text-text/70" : "text-primary/70"
                   }`}
                 >
                   {t(item.label)}
                 </Link>
               ))}
+              {session && (
+                <Button
+                  icon={<FaHeart />}
+                  iconPosition="left"
+                  variant="outline"
+                  onClick={() => router.push("/wishlist")}
+                  className="cursor-pointer"
+                />
+              )}
 
               <div className="mt-4 flex flex-col gap-3">
                 {session ? (
