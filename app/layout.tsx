@@ -3,6 +3,8 @@ import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
+import ChatBubble from "@/components/chat/ChatBubble";
+import ChatWindow from "@/components/chat/ChatWindow";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,7 +36,11 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col bg-background">
-        <Providers> {children}</Providers>
+        <Providers>
+          {children}
+          <ChatBubble />
+          <ChatWindow />
+        </Providers>
       </body>
     </html>
   );
