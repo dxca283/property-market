@@ -6,55 +6,54 @@ import { Badge } from "@/components/ui/badge";
 
 interface ConversationItemProps {
   conversation: Conversation;
-  onClick: (id: string) => void;
+  currentUserId?: string;
+  onClick: () => void;
 }
 
 const ConversationItem = ({
   conversation,
+  currentUserId,
   onClick,
 }: ConversationItemProps) => {
+  const isBuyer = conversation.buyerId === currentUserId;
+  const otherUser = isBuyer ? conversation.seller : conversation.buyer;
+  const unreadCount = isBuyer ? conversation.buyerUnread : conversation.sellerUnread;
+
+  const displayName = `${conversation.property.title} - ${otherUser?.name || "Unknown"}`;
+  
+
   return (
     <button
-      onClick={() => onClick(conversation.id)}
-      className="w-full text-left px-3 py-3 rounded-lg hover:bg-accent transition-colors"
+      onClick={onClick}
+      className="w-full text-left px-2 py-2 rounded-lg hover:bg-accent transition-colors"
     >
       <div className="flex gap-3">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={conversation.avatar} />
+          <AvatarImage src={conversation.property.image} />
 
           <AvatarFallback>
-            {conversation.name.slice(0, 2).toUpperCase()}
+            {conversation.property.title.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
 
         <div className="flex-1 min-w-0">
-
           <div className="flex justify-between items-center">
-
-            <h3 className="font-medium truncate">
-              {conversation.name}
+            <h3 className="font-medium truncate" title={displayName}>
+              {displayName}
             </h3>
-
-            <span className="text-xs text-muted-foreground">
-              {conversation.time}
-            </span>
-
           </div>
 
           <div className="flex justify-between items-center mt-1">
-
             <p className="text-sm text-muted-foreground truncate">
-              {conversation.lastMessage}
+              {conversation.lastMessage || "No messages yet"}
             </p>
 
-            {conversation.unread > 0 && (
+            {unreadCount > 0 && (
               <Badge className="ml-2">
-                {conversation.unread}
+                {unreadCount}
               </Badge>
             )}
-
           </div>
-
         </div>
       </div>
     </button>

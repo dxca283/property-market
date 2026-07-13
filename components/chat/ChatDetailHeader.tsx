@@ -2,18 +2,30 @@
 
 import { ArrowLeft, X } from "lucide-react";
 import { useChatStore } from "@/store/useChatStore";
+import { useConversations } from "@/hooks/useConversations";
+import { authClient } from "@/lib/auth-client";
+import { Conversation } from "@/types/conversation";
 
 const ChatDetailHeader = () => {
-  const {
-    backToList,
-    closeChat,
-  } = useChatStore();
+  const { backToList, closeChat, selectedConversationId } = useChatStore();
+  const { data: session } = authClient.useSession();
+  const { data: conversations } = useConversations();
+
+  const currentUserId = session?.user?.id;
+  const conversation = conversations?.find(
+    (c: Conversation) => c.id === selectedConversationId
+  );
+
+  const isBuyer = conversation?.buyerId === currentUserId;
+  const otherUser = isBuyer ? conversation?.seller : conversation?.buyer;
+
+  const displayName = conversation
+    ? `${conversation.property.title} - ${otherUser?.name || "Unknown"}`
+    : "Loading...";
 
   return (
     <div className="flex h-14 items-center justify-between border-b px-4">
-
       <div className="flex items-center gap-2">
-
         <button
           onClick={backToList}
           className="p-2 hover:bg-black/5 rounded-full transition-colors"
@@ -21,27 +33,23 @@ const ChatDetailHeader = () => {
           <ArrowLeft className="h-5 w-5" />
         </button>
 
-        <div>
-
-          <p className="font-medium">
-            John Doe
+        <div className="min-w-0">
+          <p className="font-medium truncate max-w-[200px] md:max-w-[300px]">
+            {displayName}
           </p>
 
           <p className="text-xs text-muted-foreground">
-            Online
+            {conversation ? "Online" : ""}
           </p>
-
         </div>
-
       </div>
 
       <button
         onClick={closeChat}
-        className="p-2 hover:bg-black/5 rounded-full transition-colors"
+        className="p-2 hover:bg-black/5 rounded-full transition-colors border"
       >
         <X className="h-5 w-5" />
       </button>
-
     </div>
   );
 };

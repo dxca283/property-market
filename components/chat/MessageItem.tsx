@@ -7,40 +7,21 @@ import {
   MessageContent,
   MessageFooter,
 } from "@/components/ui/message";
+import { Bubble, BubbleContent } from "../ui/bubble";
 
 interface MessageItemProps {
   message: MessageType;
+  isMine: boolean;
 }
 
-const MessageItem = ({
-  message,
-}: MessageItemProps) => {
-
-  const isMine = message.senderId === "me";
-
+const MessageItem = ({ message, isMine }: MessageItemProps) => {
   return (
     <Message align={isMine ? "end" : "start"}>
-      <MessageContent
-        className={clsx(
-          "max-w-[75%] rounded-2xl px-4 py-2 text-sm break-words",
-          isMine
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted"
-        )}
-      >
-        <p>{message.content}</p>
+      <MessageContent>
+        <Bubble variant={isMine ? "default" : "muted"}>
+          <BubbleContent>{message.content}</BubbleContent>
+        </Bubble>
       </MessageContent>
-
-      <MessageFooter
-        className={clsx(
-          "mt-1 text-[10px]",
-          isMine
-            ? "text-primary-foreground/70"
-            : "text-muted-foreground"
-        )}
-      >
-        {message.createdAt}
-      </MessageFooter>
     </Message>
   );
 };

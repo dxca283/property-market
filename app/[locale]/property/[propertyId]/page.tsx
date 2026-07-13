@@ -2,6 +2,7 @@ import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
 import EmailForm from "@/components/properties/EmailForm";
 import PropertyPageSkeleton from "@/components/skeletons/PropertyPageSkeleton";
+import Button from "@/components/ui/Button";
 import { getProperty } from "@/server-actions/getProperty";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -72,11 +73,18 @@ const PropertyContent = async ({ propertyId }: { propertyId: string }) => {
             </div>
           </div>
           {/* right */}
-          <div className="rounded-[28px] border border-black/5 bg-card p-6 shadow-sm">
-            <p className="text-sm text-text">{t("propertyPrice")}</p>
-            <h2 className="mt-2 text-4xl font-bold text-primary">
-              ${formatPrice(property?.price || "")}
-            </h2>
+          <div className="space-y-6 p-3">
+            <div className="rounded-[28px] border border-black/5 bg-card p-4 shadow-sm">
+              <p className="text-sm text-text">{t("propertyPrice")}</p>
+              <h2 className="mt-2 text-4xl font-bold text-primary">
+                ${formatPrice(property?.price || "")}
+              </h2>
+            </div>
+            <div className="">
+              <Button variant="outline">
+                Send Message
+              </Button>
+            </div>
           </div>
         </div>
         <div className="w-full h-60 md:h-100 lg:h-120 relative my-6">
