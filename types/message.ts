@@ -14,3 +14,4 @@ export interface GetMessagesResponse {
   messages: Message[];
   nextCursor: string | null;
 }
+

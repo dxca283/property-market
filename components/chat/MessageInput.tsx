@@ -19,17 +19,11 @@ const MessageInput = () => {
 
     if (!selectedConversationId) return;
 
-    mutate(
-      {
-        content: message,
-        conversationId: selectedConversationId,
-      },
-      {
-        onSuccess: () => {
-          setMessage("");
-        },
-      }
-    );
+    mutate({
+      content: message,
+      conversationId: selectedConversationId,
+    });
+    setMessage("");
   };
 
   return (

@@ -1,14 +1,15 @@
 import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
 import EmailForm from "@/components/properties/EmailForm";
+import ContactSellerButton from "@/components/properties/ContactSellerButton";
 import PropertyPageSkeleton from "@/components/skeletons/PropertyPageSkeleton";
-import Button from "@/components/ui/Button";
 import { getProperty } from "@/server-actions/getProperty";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Suspense } from "react";
 import { FaMapMarkerAlt, FaRulerCombined } from "react-icons/fa";
 import { LuBath, LuBedDouble } from "react-icons/lu";
+import { getCurrentUser } from "@/server-actions/getCurrentUser";
 
 export const formatPrice = (price: number | string) => {
   return Number(price).toLocaleString();
@@ -33,6 +34,8 @@ const PropertyPage = async ({
 const PropertyContent = async ({ propertyId }: { propertyId: string }) => {
   const t = await getTranslations("property");
   const property = await getProperty(propertyId);
+  const currentUser = await getCurrentUser();
+
   return (
     <section className="py-15">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -80,10 +83,14 @@ const PropertyContent = async ({ propertyId }: { propertyId: string }) => {
                 ${formatPrice(property?.price || "")}
               </h2>
             </div>
-            <div className="">
-              <Button variant="outline">
-                Send Message
-              </Button>
+            <div>
+              {currentUser && (
+                <ContactSellerButton
+                  propertyId={property?.id ?? ""}
+                  sellerName={property?.owner?.name ?? "Unknown"}
+                  sellerImage={property?.owner?.image ?? "/images/avatar.png"}
+                />
+              )}
             </div>
           </div>
         </div>
