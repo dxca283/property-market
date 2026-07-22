@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { SendHorizontal } from "lucide-react";
@@ -11,6 +11,7 @@ const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { selectedConversationId } = useChatStore();
   const { mutate, isPending } = useSendMessage();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +25,10 @@ const MessageInput = () => {
     });
 
     setMessage("");
+
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 50);
   };
 
   return (
@@ -32,13 +37,13 @@ const MessageInput = () => {
       className="flex items-center gap-2 border-t p-3"
     >
       <Input
+        ref={inputRef}
         name="message"
         label="Message"
         value={message}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setMessage(e.target.value)
         }
-        disabled={isPending}
       />
 
       <Button type="submit" disabled={!message.trim() || isPending}>
