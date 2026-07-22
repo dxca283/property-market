@@ -22,7 +22,7 @@ const ChatWindow = () => {
   if (!isOpen || !session) return null;
 
   return (
-    <Card className="fixed bottom-70 right-6 z-50 flex h-[350px] w-[360px] flex-col overflow-hidden shadow-xl">
+    <Card className="fixed bottom-70 right-6 z-50 flex h-87.5 w-90 flex-col overflow-hidden shadow-xl">
       <ChatWindowHeader />
       <ChatWindowBody />
       {selectedConversationId && <MessageInput />}
