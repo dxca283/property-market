@@ -15,12 +15,15 @@ const ConversationItem = ({
   currentUserId,
   onClick,
 }: ConversationItemProps) => {
-  const isBuyer = conversation.buyerId === currentUserId;
-  const otherUser = isBuyer ? conversation.seller : conversation.buyer;
-  const unreadCount = isBuyer ? conversation.buyerUnread : conversation.sellerUnread;
+  const isOwner = conversation.sellerId === currentUserId;
+  const otherUser = isOwner ? conversation.buyer : conversation.seller;
+  const unreadCount = isOwner
+    ? conversation.sellerUnread
+    : conversation.buyerUnread;
 
-  const displayName = `${conversation.property.title} - ${otherUser?.name || "Unknown"}`;
-  
+  const displayName = `${conversation.property.title} - ${
+    isOwner ? "Mine" : otherUser?.name || "Unknown"
+  }`;
 
   return (
     <button
@@ -48,11 +51,7 @@ const ConversationItem = ({
               {conversation.lastMessage || "No messages yet"}
             </p>
 
-            {unreadCount > 0 && (
-              <Badge className="ml-2">
-                {unreadCount}
-              </Badge>
-            )}
+            {unreadCount > 0 && <Badge className="ml-2">{unreadCount}</Badge>}
           </div>
         </div>
       </div>

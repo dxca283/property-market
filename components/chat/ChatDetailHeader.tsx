@@ -13,14 +13,15 @@ const ChatDetailHeader = () => {
 
   const currentUserId = session?.user?.id;
   const conversation = conversations?.find(
-    (c: Conversation) => c.id === selectedConversationId
+    (c: Conversation) => c.id === selectedConversationId,
   );
-
-  const isBuyer = conversation?.buyerId === currentUserId;
-  const otherUser = isBuyer ? conversation?.seller : conversation?.buyer;
+  const isOwner = conversation?.sellerId === currentUserId;
+  const otherUser = isOwner ? conversation?.buyer : conversation?.seller;
 
   const displayName = conversation
-    ? `${conversation.property.title} - ${otherUser?.name || "Unknown"}`
+    ? `${conversation.property.title} - ${
+        isOwner ? "Mine" : otherUser?.name || "Unknown"
+      }`
     : "Loading...";
 
   return (
@@ -34,7 +35,7 @@ const ChatDetailHeader = () => {
         </button>
 
         <div className="min-w-0">
-          <p className="font-medium truncate max-w-[200px] md:max-w-[300px]">
+          <p className="font-medium truncate max-w-50 md:max-w-75">
             {displayName}
           </p>
 

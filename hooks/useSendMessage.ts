@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { GetMessagesResponse, Message } from "@/types/message";
 import { authClient } from "@/lib/auth-client";
+import { Conversation } from "@/types/conversation";
 
 export const useSendMessage = () => {
   const queryClient = useQueryClient();
@@ -25,7 +26,9 @@ export const useSendMessage = () => {
       const previous = queryClient.getQueryData<
         InfiniteData<GetMessagesResponse>
       >(["messages", variables.conversationId]);
-
+      const previousConversations = queryClient.getQueryData<Conversation[]>([
+        "conversations",
+      ]);
       const optimisticMessage: Message = {
         id: `temp-${Date.now()}`,
 
@@ -65,11 +68,39 @@ export const useSendMessage = () => {
           };
         },
       );
+      queryClient.setQueryData(
+        ["conversations"],
+        (old: Conversation[] | undefined) => {
+          if (!old) return old;
+
+          const conversation = old.find(
+            (c) => c.id === variables.conversationId,
+          );
+
+          if (!conversation) return old;
+
+          const updatedConversation: Conversation = {
+            ...conversation,
+
+            lastMessage: variables.content,
+
+            lastMessageAt: new Date().toISOString(),
+
+            lastSenderId: session?.user.id ?? "",
+          };
+
+          return [
+            updatedConversation,
+
+            ...old.filter((c) => c.id !== conversation.id),
+          ];
+        },
+      );
 
       return {
         previous,
-
         tempId: optimisticMessage.id,
+        previousConversations,
       };
     },
     onError: (err, variables, context) => {
@@ -77,6 +108,10 @@ export const useSendMessage = () => {
         ["messages", variables.conversationId],
 
         context?.previous,
+      );
+      queryClient.setQueryData(
+        ["conversations"],
+        context?.previousConversations,
       );
     },
     onSuccess: (data, variables, context) => {
@@ -101,6 +136,18 @@ export const useSendMessage = () => {
 
             pages,
           };
+        },
+      );
+      queryClient.setQueryData(
+        ["conversations"],
+        (old: Conversation[] | undefined) => {
+          if (!old) return old;
+
+          return [
+            data.conversation,
+
+            ...old.filter((c) => c.id !== data.conversation.id),
+          ];
         },
       );
     },

@@ -12,22 +12,25 @@ const MessageInput = () => {
   const { selectedConversationId } = useChatStore();
   const { mutate, isPending } = useSendMessage();
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!message.trim()) return;
-
     if (!selectedConversationId) return;
 
     mutate({
       content: message,
       conversationId: selectedConversationId,
     });
+
     setMessage("");
   };
 
   return (
-    <div className="flex items-center gap-2 border-t p-3">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-2 border-t p-3"
+    >
       <Input
         name="message"
         label="Message"
@@ -38,10 +41,10 @@ const MessageInput = () => {
         disabled={isPending}
       />
 
-      <Button disabled={!message.trim() || isPending} onClick={handleSubmit}>
+      <Button type="submit" disabled={!message.trim() || isPending}>
         <SendHorizontal className="h-5 w-5" />
       </Button>
-    </div>
+    </form>
   );
 };
 

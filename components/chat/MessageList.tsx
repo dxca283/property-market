@@ -7,9 +7,12 @@ import { useMessages } from "@/hooks/useMessages";
 import { authClient } from "@/lib/auth-client";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useLayoutEffect } from "react";
+import { socket } from "@/lib/socket";
+import { useRealtimeMessages } from "@/hooks/useRealtimeMessages";
 
 const MessageList = () => {
   const { selectedConversationId } = useChatStore();
+  useRealtimeMessages(selectedConversationId);
   const { data: session } = authClient.useSession();
 
   const {
@@ -67,7 +70,8 @@ const MessageList = () => {
       stateRef.current.pagesLength > 0
     ) {
       const newScrollHeight = scrollEl.scrollHeight;
-      const heightDifference = newScrollHeight - stateRef.current.oldScrollHeight;
+      const heightDifference =
+        newScrollHeight - stateRef.current.oldScrollHeight;
       scrollEl.scrollTop += heightDifference;
     } else if (
       currentLastMessageId !== stateRef.current.lastMessageId &&
@@ -96,7 +100,7 @@ const MessageList = () => {
       {
         root: scrollRef.current,
         threshold: 0.1,
-      }
+      },
     );
 
     observerRef.current.observe(sentinelRef.current);

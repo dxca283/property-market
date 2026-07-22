@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/server-actions/getCurrentUser";
 import { prisma } from "@/database/db";
 import { sendMessageSchema } from "@/schemas/message.schema";
 import { z } from "zod";
+import { socketServer } from "@/lib/sockerServer";
 
 class HttpError extends Error {
   constructor(
@@ -65,7 +66,6 @@ export async function POST(req: Request) {
       // CASE 2
       // Conversation chưa tồn tại
       // ==========================================
-
       else {
         const property = await tx.property.findUnique({
           where: {
@@ -111,10 +111,7 @@ export async function POST(req: Request) {
               });
 
               if (!conversation) {
-                throw new HttpError(
-                  500,
-                  "Failed to retrieve conversation",
-                );
+                throw new HttpError(500, "Failed to retrieve conversation");
               }
             } else {
               throw e;
@@ -199,6 +196,15 @@ export async function POST(req: Request) {
         message,
       };
     });
+    try {
+      await socketServer.post("/events/message", {
+        conversation: result.conversation,
+        message: result.message,
+        senderId: currentUser.id,
+      });
+    } catch (error) {
+      console.error("[SOCKET_EMIT]", error);
+    }
 
     return NextResponse.json(result);
   } catch (error: any) {

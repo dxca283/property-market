@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/server-actions/getCurrentUser";
 import { prisma } from "@/database/db";
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 5;
 
 export async function GET(
   req: NextRequest,
