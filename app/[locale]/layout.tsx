@@ -7,6 +7,7 @@ import LoginModal from "@/components/modals/LoginModal";
 import CreatePropertyModal from "@/components/modals/CreatePropertyModal";
 import FilterModal from "@/components/modals/FilterModal";
 import { Toaster } from "react-hot-toast";
+import ContactSellerModal from "@/components/modals/ContactSellerModal";
 
 type Props = {
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <LoginModal />
       <CreatePropertyModal />
       <FilterModal />
+      <ContactSellerModal />
 
       <Toaster />
     </NextIntlClientProvider>

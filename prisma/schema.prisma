@@ -46,9 +46,10 @@ model Property {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ownerId   String
-  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  wishLists WishList[]
+  ownerId       String
+  owner         User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  wishLists     WishList[]
+  conversations Conversation[]
 
   @@map("property")
 }
@@ -86,6 +87,11 @@ model User {
   accounts      Account[]
   wishLists     WishList[]
   properties    Property[]
+
+  buyerConversations  Conversation[] @relation("BuyerConversations")
+  sellerConversations Conversation[] @relation("SellerConversations")
+
+  messages Message[]
 
   @@unique([email])
   @@map("user")
@@ -137,4 +143,56 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Conversation {
+  id String @id @default(cuid())
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  buyerId String
+  buyer   User   @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
+
+  sellerId String
+  seller   User   @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  lastMessage   String?
+  lastSenderId  String?
+  lastMessageAt DateTime?
+
+  buyerUnread  Int @default(0)
+  sellerUnread Int @default(0)
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([propertyId, buyerId])
+  @@index([buyerId, lastMessageAt])
+  @@index([sellerId, lastMessageAt])
+  @@map("conversation")
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  content String?
+
+  imageUrl String?
+
+  isRead Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([conversationId, createdAt, id])
+  @@map("message")
 }
