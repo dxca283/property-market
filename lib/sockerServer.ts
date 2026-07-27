@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const socketServer = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: process.env.NEXT_PUBLIC_SOCKET_URL,
 });
