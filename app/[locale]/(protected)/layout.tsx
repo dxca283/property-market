@@ -1,3 +1,4 @@
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { getCurrentUser } from "@/server-actions/getCurrentUser";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -8,11 +9,15 @@ const ProtectedLayout = async ({
   children: React.ReactNode;
 }>) => {
   const user = await getCurrentUser();
-    if (!user) {
-        redirect("/");
-    }
-    
-  return <>{children}</>;
+  if (!user) {
+    redirect("/");
+  }
+
+  return (
+    <>
+      <TooltipProvider>{children}</TooltipProvider>
+    </>
+  );
 };
 
 export default ProtectedLayout;

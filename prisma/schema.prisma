@@ -12,6 +12,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Property {
   id          String @id @default(cuid())
   title       String
@@ -30,7 +36,12 @@ model Property {
   location String
   address  String
 
-  image String
+  image           String
+  status          PropertyStatus @default(PENDING)
+  rejectionReason String?
+
+  approvedAt DateTime?
+  rejectedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,12 +68,18 @@ model WishList {
   @@map("wishlist")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id            String     @id
   name          String
   email         String
   emailVerified Boolean    @default(false)
   image         String?
+  role          Role       @default(USER)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   sessions      Session[]

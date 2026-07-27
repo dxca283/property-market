@@ -11,12 +11,12 @@ export const getCurrentUser = async () => {
   }
   const user = await prisma.user.findUnique({
     where: {
-        id: session.user.id
+      id: session.user.id,
     },
     select: {
-        id: true
-    }
-
-  })
+      id: true,
+      role: true,
+    },
+  });
   return user;
 };

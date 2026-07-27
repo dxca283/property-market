@@ -4,6 +4,9 @@ export const getRecentProperties = async () => {
   try {
     const properties = await prisma.property.findMany({
       take: 6,
+      where: {
+        status: "APPROVED",
+      },
       orderBy: { createdAt: "desc" },
     });
     return properties;

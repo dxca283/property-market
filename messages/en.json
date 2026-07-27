@@ -18,7 +18,9 @@
     "marketplace": "Marketplace",
     "login": "Login",
     "logout": "Logout",
-    "addProperty": "Add Property"
+    "addProperty": "Add Property",
+    "wishlist": "Wishlist",
+    "adminDashboard": "Admin Dashboard"
   },
   "search": {
     "placeholder": "Search by city, neighborhood or address",

@@ -1,19 +1,20 @@
 "use client";
 
-import PropertyCard from "./PropertyCard";
+import ManagePropertyCard from "./ManagePropertyCard";
 import EmptyState from "../ui/EmptyState";
 import CardSkeleton from "../skeletons/CardSkeleton";
 import { useUserProperties } from "@/hooks/useUserProperties";
 import { useTranslations } from "next-intl";
+import { PropertyStatus } from "@/app/generated/prisma/enums";
 
-const MyProperties = () => {
+const MyProperties = ({ status, isAdmin }: { status?: PropertyStatus, isAdmin?: boolean }) => {
   const t = useTranslations("property");
 
   const {
     data: properties,
     isLoading,
     isError,
-  } = useUserProperties();
+  } = useUserProperties(status);
 
   if (isLoading) {
     return <CardSkeleton />;
@@ -33,9 +34,9 @@ const MyProperties = () => {
   }
 
   return (
-    <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-4">
+    <div className="flex flex-col gap-4 my-4">
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
+        <ManagePropertyCard key={property.id} property={property} status={status} isAdmin={isAdmin} />
       ))}
     </div>
   );
