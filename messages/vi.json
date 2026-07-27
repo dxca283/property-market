@@ -18,7 +18,9 @@
     "marketplace": "Thị trường",
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
-    "addProperty": "Thêm bất động sản"
+    "addProperty": "Thêm bất động sản",
+    "wishlist": "Mục yêu thích",
+    "adminDashboard": "Quản trị viên"
   },
   "search": {
     "placeholder": "Tìm kiếm theo thành phố, khu vực hoặc địa chỉ",

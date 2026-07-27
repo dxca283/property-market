@@ -1,8 +1,15 @@
 "use client";
 
 import Button from "../ui/Button";
-import { FaHeart, FaHome } from "react-icons/fa";
+import { FaHeart, FaHome, FaUserCircle, FaCog } from "react-icons/fa";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -88,31 +95,37 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
           <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher />
             {session ? (
-              <Button variant="outline" onClick={handleLogout}>
-                {t("logout")}
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 dark:bg-white/10 transition hover:bg-black/10 dark:hover:bg-white/20">
+                  <FaUserCircle size={24} className={isTransparent ? "text-white/80" : "text-text/70"} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <div className="px-2 py-1.5 text-sm font-medium text-text/80 break-all truncate">
+                    {session.user?.name}
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => router.push("/wishlist")} className="cursor-pointer">
+                    <FaHeart className="mr-2" /> {t("wishlist")}
+                  </DropdownMenuItem>
+                  {!isPending && (
+                    <DropdownMenuItem onClick={openCreateProperty} className="cursor-pointer">
+                      <FaHome className="mr-2" /> {t("addProperty")}
+                    </DropdownMenuItem>
+                  )}
+                  {(session?.user as any)?.role === "ADMIN" && (
+                    <DropdownMenuItem onClick={() => router.push("/admin")} className="cursor-pointer">
+                      <FaCog className="mr-2" /> {t("adminDashboard")}
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer">
+                    {t("logout")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Button variant="outline" onClick={openLogin}>
                 {t("login")}
-              </Button>
-            )}
-
-            <Button
-              icon={<FaHeart />}
-              iconPosition="left"
-              variant="outline"
-              onClick={() => router.push("/wishlist")}
-              className="cursor-pointer"
-            />
-            {!isPending && session && (
-              <Button
-                icon={<FaHome />}
-                onClick={openCreateProperty}
-                iconPosition="left"
-                variant="outline"
-                className=""
-              >
-                {t("addProperty")}
               </Button>
             )}
           </div>
@@ -155,7 +168,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 />
               )}
 
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-2 flex flex-col gap-3">
                 {session ? (
                   <Button variant="outline" onClick={handleLogout}>
                     {t("logout")}
@@ -174,6 +187,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                     onClick={openCreateProperty}
                   >
                     {t("addProperty")}
+                  </Button>
+                )}
+
+                {(session?.user as any)?.role === "ADMIN" && (
+                  <Button
+                    icon={<FaCog />}
+                    iconPosition="left"
+                    variant="outline"
+                    onClick={() => {
+                      setIsOpen(false);
+                      router.push("/admin");
+                    }}
+                  >
+                    {t("adminDashboard")}
                   </Button>
                 )}
               </div>

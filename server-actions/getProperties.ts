@@ -15,6 +15,7 @@ export const getProperties = async (params: GetPropertiesParams) => {
       ...(params.propertyType && {
         propertyType: params.propertyType,
       }),
+      status: "APPROVED",
 
       ...(params.location && {
         location: {
