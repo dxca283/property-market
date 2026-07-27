@@ -1,6 +1,7 @@
 import FrontEndLayout from "@/components/layouts/FrontEndLayout";
 import Navbar from "@/components/navbar/Navbar";
 import EmailForm from "@/components/properties/EmailForm";
+import ContactSellerButton from "@/components/properties/ContactSellerButton";
 import PropertyPageSkeleton from "@/components/skeletons/PropertyPageSkeleton";
 import { getProperty } from "@/server-actions/getProperty";
 import { getTranslations } from "next-intl/server";
@@ -8,6 +9,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { FaMapMarkerAlt, FaRulerCombined } from "react-icons/fa";
 import { LuBath, LuBedDouble } from "react-icons/lu";
+import { getCurrentUser } from "@/server-actions/getCurrentUser";
 
 export const formatPrice = (price: number | string) => {
   return Number(price).toLocaleString();
@@ -32,6 +34,8 @@ const PropertyPage = async ({
 const PropertyContent = async ({ propertyId }: { propertyId: string }) => {
   const t = await getTranslations("property");
   const property = await getProperty(propertyId);
+  const currentUser = await getCurrentUser();
+
   return (
     <section className="py-15">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -72,11 +76,22 @@ const PropertyContent = async ({ propertyId }: { propertyId: string }) => {
             </div>
           </div>
           {/* right */}
-          <div className="rounded-[28px] border border-black/5 bg-card p-6 shadow-sm">
-            <p className="text-sm text-text">{t("propertyPrice")}</p>
-            <h2 className="mt-2 text-4xl font-bold text-primary">
-              ${formatPrice(property?.price || "")}
-            </h2>
+          <div className="space-y-6 p-3">
+            <div className="rounded-[28px] border border-black/5 bg-card p-4 shadow-sm">
+              <p className="text-sm text-text">{t("propertyPrice")}</p>
+              <h2 className="mt-2 text-4xl font-bold text-primary">
+                ${formatPrice(property?.price || "")}
+              </h2>
+            </div>
+            <div>
+              {currentUser && (
+                <ContactSellerButton
+                  propertyId={property?.id ?? ""}
+                  sellerName={property?.owner?.name ?? "Unknown"}
+                  sellerImage={property?.owner?.image ?? "/images/avatar.png"}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className="w-full h-60 md:h-100 lg:h-120 relative my-6">
