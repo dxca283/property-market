@@ -7,12 +7,9 @@ import { useMessages } from "@/hooks/useMessages";
 import { authClient } from "@/lib/auth-client";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useLayoutEffect } from "react";
-import { socket } from "@/lib/socket";
-import { useRealtimeMessages } from "@/hooks/useRealtimeMessages";
 
 const MessageList = () => {
   const { selectedConversationId } = useChatStore();
-  useRealtimeMessages(selectedConversationId);
   const { data: session } = authClient.useSession();
 
   const {

@@ -75,18 +75,19 @@ enum Role {
 }
 
 model User {
-  id            String     @id
+  id            String         @id
   name          String
   email         String
-  emailVerified Boolean    @default(false)
+  emailVerified Boolean        @default(false)
   image         String?
-  role          Role       @default(USER)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  role          Role           @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   sessions      Session[]
   accounts      Account[]
   wishLists     WishList[]
   properties    Property[]
+  notifications Notification[]
 
   buyerConversations  Conversation[] @relation("BuyerConversations")
   sellerConversations Conversation[] @relation("SellerConversations")
@@ -195,4 +196,31 @@ model Message {
 
   @@index([conversationId, createdAt, id])
   @@map("message")
+}
+
+enum NotificationType {
+  PROPERTY
+  MESSAGE
+  SYSTEM
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type NotificationType
+
+  title   String
+  message String
+
+  data Json?
+
+  isRead Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@map("notification")
 }

@@ -20,6 +20,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import LanguageSwitcher from "../language/LanguageSwitcher";
 import { useQueryClient } from "@tanstack/react-query";
+import NotificationButton from "./NotificationButton";
 interface NavbarProps {
   variant?: "transparent" | "solid";
 }
@@ -48,6 +49,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const { data: session, isPending } = authClient.useSession();
   const queryClient = useQueryClient();
   const isTransparent = variant === "transparent";
+
   const handleLogout = async () => {
     await authClient.signOut();
     queryClient.removeQueries({
@@ -93,11 +95,14 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
           {/* Desktop buttons */}
           <div className="hidden lg:flex items-center gap-4">
+            {session && <NotificationButton isTransparent={isTransparent} />}
             <LanguageSwitcher />
             {session ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 dark:bg-white/10 transition hover:bg-black/10 dark:hover:bg-white/20">
-                  <FaUserCircle size={24} className={isTransparent ? "text-white/80" : "text-text/70"} />
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="cursor-pointer">
+                    <FaUserCircle size={20} />
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <div className="px-2 py-1.5 text-sm font-medium text-text/80 break-all truncate">
@@ -131,12 +136,15 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
           </div>
 
           {/*mobile menu button */}
-          <button
-            className={`flex h-11 w-11 items-center justify-center rounded-2xl transition lg:hidden ${isTransparent ? "border border-white/10 bg-white/5 text-white" : "border border-black/10 bg-background text-text"}`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <IoClose size={24} /> : <HiOutlineMenuAlt3 size={24} />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            {session && <NotificationButton isTransparent={isTransparent} />}
+            <button
+              className={`flex h-11 w-11 items-center justify-center rounded-2xl transition ${isTransparent ? "border border-white/10 bg-white/5 text-white" : "border border-black/10 bg-background text-text"}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <IoClose size={24} /> : <HiOutlineMenuAlt3 size={24} />}
+            </button>
+          </div>
         </nav>
         {/* Mobile menu */}
         {isOpen && (

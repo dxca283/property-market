@@ -2,29 +2,36 @@
 
 import { useEffect } from "react";
 import { socket } from "@/lib/socket";
-import { useChatStore } from "@/store/useChatStore";
 
-export const useSocket = () => {
-  const { selectedConversationId } = useChatStore();
-
+export const useSocket = (
+  conversationId: string | null,
+) => {
   useEffect(() => {
-    if (!selectedConversationId) return;
+    if (!conversationId) return;
 
-    const onConnect = () => {
-      console.log("Join", selectedConversationId);
-      socket.emit("join-conversation", selectedConversationId);
+    const joinRoom = () => {
+      console.log("Join", conversationId);
+      socket.emit(
+        "join-conversation",
+        conversationId,
+      );
     };
 
-    socket.on("connect", onConnect);
+    socket.on("connect", joinRoom);
 
     if (socket.connected) {
-      onConnect();
+      joinRoom();
     }
 
     return () => {
-      console.log("Leave", selectedConversationId);
-      socket.off("connect", onConnect);
-      socket.emit("leave-conversation", selectedConversationId);
+      console.log("Leave", conversationId);
+
+      socket.off("connect", joinRoom);
+
+      socket.emit(
+        "leave-conversation",
+        conversationId,
+      );
     };
-  }, [selectedConversationId]);
+  }, [conversationId]);
 };

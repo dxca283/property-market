@@ -6,6 +6,6 @@ export const useUserProperties = (status?: PropertyStatus) => {
   return useQuery({
     queryKey: ["my-properties", status] as const,
     queryFn: () => propertyService.getMyProperties(status),
-    staleTime: 60*1000
+    staleTime: 60 * 1000,
   });
 };
