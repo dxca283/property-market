@@ -47,7 +47,11 @@
     "password": "Mật khẩu",
     "email": "Email",
     "loading": "Đang tải...",
-    "clearFilters": "Xóa bộ lọc"
+    "clearFilters": "Xóa bộ lọc",
+    "wishlist": "Mục yêu thích",
+    "notifications": "Thông báo",
+    "markAllRead": "Đánh dấu đã đọc",
+    "noNotifications": "Không có thông báo"
   },
   "property": {
     "createListing": "Tạo tin đăng mới",
