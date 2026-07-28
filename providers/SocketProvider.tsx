@@ -10,15 +10,34 @@ export default function SocketProvider({
   children: React.ReactNode;
 }) {
   const { data: session } = authClient.useSession();
+
   useEffect(() => {
-    if (!session?.user.id) return;
+    if (!session?.user?.id) return;
+
+    const onConnect = () => {
+      console.log("Connected", socket.id);
+      socket.emit("join-user", session.user.id);
+    };
+
+    const onDisconnect = () => {
+      console.log("Disconnected");
+    };
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
     socket.connect();
-    socket.emit("join-user", session.user.id)
+
+    if (socket.connected) {
+      onConnect();
+    }
 
     return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
       socket.disconnect();
     };
-  }, []);
+  }, [session?.user?.id]);
 
-  return <>{children}</>;
+  return children;
 }

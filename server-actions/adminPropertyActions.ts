@@ -1,6 +1,7 @@
 "use server";
 import { prisma } from "@/database/db";
 import { auth } from "@/lib/auth";
+import { socketServer } from "@/lib/sockerServer";
 import { headers } from "next/headers";
 
 async function requireAdmin() {
@@ -70,6 +71,14 @@ export async function approveProperty(propertyId: string) {
       notification,
     };
   });
+  try {
+    await socketServer.post("/events/notification", {
+      userId: result.updatedProperty.ownerId,
+      notification: result.notification,
+    });
+  } catch (error) {
+    console.error("[SOCKET_EMIT]", error);
+  }
 
   return result;
 }
@@ -129,6 +138,14 @@ export async function rejectProperty(propertyId: string, reason: string) {
       notification,
     };
   });
+  try {
+    await socketServer.post("/events/notification", {
+      userId: result.updatedProperty.ownerId,
+      notification: result.notification,
+    });
+  } catch (error) {
+    console.error("[SOCKET_EMIT]", error);
+  }
 
   return result;
 }
