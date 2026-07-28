@@ -47,7 +47,12 @@
     "password": "Password",
     "email": "Email",
     "loading": "Loading...",
-    "clearFilters": "Clear Filters"
+    "clearFilters": "Clear Filters",
+    "wishlist": "wishlist",
+    "notifications": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No notifications"
+    
   },
   "property": {
     "createListing": "Create a new listing",

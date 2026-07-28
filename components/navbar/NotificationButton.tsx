@@ -12,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 import Button from "../ui/Button";
 import { useMarkNotificationRead } from "@/hooks/useMarkNotificationRead";
 import { useMarkAllNotificationRead } from "@/hooks/useMarkAllNotificationRead";
+import { useTranslations } from "next-intl";
 
 export default function NotificationButton({
   isTransparent = false,
@@ -21,6 +22,7 @@ export default function NotificationButton({
   const { data: notifications } = useNotifications();
   const { mutate: markRead } = useMarkNotificationRead();
   const { mutate: markAllRead } = useMarkAllNotificationRead();
+  const t = useTranslations("common");
 
   const unreadCount = notifications?.filter((n) => !n.isRead).length || 0;
 
@@ -41,7 +43,7 @@ export default function NotificationButton({
         className="w-80 max-h-96 overflow-y-auto"
       >
         <div className="flex items-center justify-between px-3 py-2 border-b border-black/5 dark:border-white/10">
-          <span className="font-semibold text-sm">Notifications</span>
+          <span className="font-semibold text-sm">{t("notifications")}</span>
           {unreadCount > 0 && (
             <button
               onClick={(e) => {
@@ -50,13 +52,13 @@ export default function NotificationButton({
               }}
               className="text-xs text-primary hover:underline cursor-pointer"
             >
-              Mark all read
+              {t("markAllRead")}
             </button>
           )}
         </div>
         {!notifications || notifications.length === 0 ? (
           <div className="p-4 text-center text-sm text-text/70">
-            No notifications
+            {t("noNotifications")}
           </div>
         ) : (
           notifications.map((notification) => (
