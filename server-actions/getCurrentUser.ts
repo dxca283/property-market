@@ -1,4 +1,3 @@
-import { prisma } from "@/database/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -9,14 +8,8 @@ export const getCurrentUser = async () => {
   if (!session?.user.id) {
     return null;
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
-    select: {
-      id: true,
-      role: true,
-    },
-  });
-  return user;
+  return {
+    id: session.user.id,
+    role: session.user.role,
+  };
 };
