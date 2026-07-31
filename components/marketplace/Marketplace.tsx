@@ -1,4 +1,4 @@
-import { getProperties } from "@/services/property.service";
+import { getCachedApprovedProperties, getProperties} from "@/services/property.service";
 import MarketplaceList from "./MarketplaceList";
 import { MarketplaceSearchParams } from "@/types/marketplace";
 
@@ -7,28 +7,38 @@ interface MarketPlaceProps {
 }
 
 const MarketPlace = async ({ searchParams }: MarketPlaceProps) => {
-  const initialData = await getProperties({
+  const params = {
     search: searchParams.search,
     address: searchParams.address,
     location: searchParams.location,
     propertyType: searchParams.propertyType,
-    maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
-    minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
-  });
+    maxPrice: searchParams.maxPrice
+      ? Number(searchParams.maxPrice)
+      : undefined,
+    minPrice: searchParams.minPrice
+      ? Number(searchParams.minPrice)
+      : undefined,
+  };
+
+  const hasFilter =
+    !!params.search ||
+    !!params.address ||
+    !!params.location ||
+    !!params.propertyType ||
+    params.minPrice !== undefined ||
+    params.maxPrice !== undefined;
+
+  const initialData = hasFilter
+    ? await getProperties(params)
+    : await getCachedApprovedProperties();
 
   return (
-    <MarketplaceList 
-      searchParams={{
-        search: searchParams.search,
-        address: searchParams.address,
-        location: searchParams.location,
-        propertyType: searchParams.propertyType,
-        maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
-        minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
-      }} 
-      initialData={initialData} 
+    <MarketplaceList
+      searchParams={params}
+      initialData={initialData}
     />
   );
 };
+
 
 export default MarketPlace;

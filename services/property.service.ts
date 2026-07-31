@@ -1,12 +1,13 @@
 import { prisma } from "@/database/db";
 import { GetPropertiesParams } from "@/types/property";
 import { Prisma } from "@/app/generated/prisma/client";
-import { getCache, setCache } from "@/lib/cache";
+import { deleteCache, getCache, setCache } from "@/lib/cache";
 import { cacheKeys } from "@/lib/cache-keys";
 import { socketServer } from "@/lib/sockerServer";
+import { PROPERTY_PAGE_LIMIT } from "@/contants/property";
 
 export const getProperties = async (params: GetPropertiesParams) => {
-  const { cursor, limit = 4 } = params;
+  const { cursor, limit = PROPERTY_PAGE_LIMIT } = params;
   const properties = await prisma.property.findMany({
     where: {
       ...(params.propertyType && {
@@ -101,6 +102,28 @@ export const getProperties = async (params: GetPropertiesParams) => {
     nextCursor,
   };
 };
+const TTL = 60;
+
+export async function getCachedApprovedProperties() {
+  const key = cacheKeys.approvedPropertiesFirstPage();
+
+  const cached = await getCache<Awaited<ReturnType<typeof getProperties>>>(key);
+
+  if (cached) {
+    console.log("✅ CACHE HIT");
+    return cached;
+  }
+
+  console.log("❌ CACHE MISS");
+
+  const data = await getProperties({
+    limit: PROPERTY_PAGE_LIMIT,
+  });
+
+  await setCache(key, data, TTL);
+
+  return data;
+}
 
 type PropertyWithOwner = Prisma.PropertyGetPayload<{
   include: {
@@ -209,6 +232,7 @@ export const approvePropertyService = async (propertyId: string) => {
       notification,
     };
   });
+  await deleteCache(cacheKeys.approvedPropertiesFirstPage());
   try {
     await socketServer.post("/events/notification", {
       userId: result.updatedProperty.ownerId,
