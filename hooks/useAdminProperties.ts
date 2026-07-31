@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { PropertyStatus } from "@/app/generated/prisma/enums";
-import { propertyService } from "@/services/property.service";
+import { propertyApi } from "@/api-client/property.api";
 
 export const useAdminProperties = (status?: PropertyStatus) => {
   return useQuery({
     queryKey: ["admin-properties", status] as const,
-    queryFn: () => propertyService.getAdminProperties(status),
+    queryFn: () => propertyApi.getAdminProperties(status),
     staleTime: 60 * 1000,
   });
 };

@@ -20,3 +20,21 @@ export interface Property {
 
   ownerId: string;
 }
+
+
+export interface GetPropertiesParams {
+  search?: string;
+  propertyType?: string;
+  location?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  address?: string;
+
+  cursor?: string;
+  limit?: number;
+}
+
+export interface PropertiesResponse {
+  items: Property[];
+  nextCursor?: string;
+}

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/database/db";
 import { sendMessageSchema } from "@/schemas/message.schema";
 import { z } from "zod";

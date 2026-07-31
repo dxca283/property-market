@@ -1,63 +1,38 @@
 "use server";
+import {
+  getNotifications,
+  markNotificationRead,
+  markAllNotificationRead,
+} from "@/services/notification.service";
 
-import { prisma } from "@/database/db";
+import { getCurrentUser } from "../lib/getCurrentUser";
 
-import { getCurrentUser } from "./getCurrentUser";
-
-export async function getNotifications() {
+export async function getNotificationsAction() {
   const user = await getCurrentUser();
 
-  return prisma.notification.findMany({
-    where: {
-      userId: user?.id,
-    },
-
-    orderBy: {
-      createdAt: "desc",
-    },
-
-    take: 20,
-  });
-}
-
-export async function markNotificationRead(notificationId: string) {
-  const user = await getCurrentUser();
-
-  const notification = await prisma.notification.findUnique({
-    where: {
-      id: notificationId,
-    },
-  });
-
-  if (!notification) {
-    throw new Error("Notification not found");
+  if (!user) {
+    throw new Error("Unauthorized");
   }
 
-  // tránh user sửa notification của người khác
-
-  if (notification.userId !== user?.id) {
-    throw new Error("Forbidden");
-  }
-
-  return prisma.notification.update({
-    where: {
-      id: notificationId,
-    },
-    data: {
-      isRead: true,
-    },
-  });
+  return getNotifications(user.id);
 }
-export async function markAllNotificationRead() {
+
+export async function markNotificationReadAction(notificationId: string) {
   const user = await getCurrentUser();
 
-  return prisma.notification.updateMany({
-    where: {
-      userId: user?.id,
-      isRead: false,
-    },
-    data: {
-      isRead: true,
-    },
-  });
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  return markNotificationRead(user.id, notificationId);
+}
+
+export async function markAllNotificationReadAction() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  return markAllNotificationRead(user.id);
 }

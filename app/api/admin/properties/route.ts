@@ -1,6 +1,6 @@
 import { PropertyStatus } from "@/app/generated/prisma/enums";
 import { prisma } from "@/database/db";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
