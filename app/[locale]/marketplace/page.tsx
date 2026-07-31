@@ -6,18 +6,13 @@ import CardSkeleton from "@/components/skeletons/CardSkeleton";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
+import { MarketplaceSearchParams } from "@/types/marketplace";
+
 type MarketplaceProps = {
-  searchParams: Promise<{
-    search?: string;
-    propertyType?: string;
-    location?: string;
-    address?: string;
-    minPrice?: number;
-    maxPrice?: number;
-  }>;
+  searchParams: Promise<MarketplaceSearchParams>;
 };
 
-const Marketplace = async ({ searchParams }: MarketplaceProps) => {
+const MarketplacePage = async ({ searchParams }: MarketplaceProps) => {
   const t = await getTranslations('marketplace');
 
   const params = await searchParams;
@@ -37,4 +32,4 @@ const Marketplace = async ({ searchParams }: MarketplaceProps) => {
   );
 };
 
-export default Marketplace;
+export default MarketplacePage;

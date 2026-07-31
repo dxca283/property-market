@@ -1,45 +1,33 @@
-import { getProperties } from "@/server-actions/getProperties";
-import EmptyState from "../ui/EmptyState";
-import PropertyCard from "../properties/PropertyCard";
-import { Property } from "@/types/property";
-import { getTranslations } from "next-intl/server";
+import { getProperties } from "@/services/property.service";
+import MarketplaceList from "./MarketplaceList";
+import { MarketplaceSearchParams } from "@/types/marketplace";
 
-interface MarketPlceProps {
-  searchParams: {
-    search?: string;
-    propertyType?: string;
-    location?: string;
-    address?: string;
-    minPrice?: number;
-    maxPrice?: number;
-  };
+interface MarketPlaceProps {
+  searchParams: MarketplaceSearchParams;
 }
 
-const MarketPlace = async ({ searchParams }: MarketPlceProps) => {
-  const t = await getTranslations("property")
-  const properties: Property[] = await getProperties({
+const MarketPlace = async ({ searchParams }: MarketPlaceProps) => {
+  const initialData = await getProperties({
     search: searchParams.search,
     address: searchParams.address,
     location: searchParams.location,
     propertyType: searchParams.propertyType,
-    maxPrice: searchParams.maxPrice,
-    minPrice: searchParams.minPrice,
+    maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+    minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
   });
-  if (properties.length === 0) {
-    return (
-      <EmptyState
-        title={t("noProperties")}
-        subtitle={t("noPropertiesSubtitle")}
-        filter
-      />
-    );
-  }
+
   return (
-    <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-12">
-      {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
-      ))}
-    </div>
+    <MarketplaceList 
+      searchParams={{
+        search: searchParams.search,
+        address: searchParams.address,
+        location: searchParams.location,
+        propertyType: searchParams.propertyType,
+        maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+        minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
+      }} 
+      initialData={initialData} 
+    />
   );
 };
 

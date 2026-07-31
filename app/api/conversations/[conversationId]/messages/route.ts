@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/database/db";
 
 const PAGE_SIZE = 5;

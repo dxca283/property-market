@@ -1,5 +1,5 @@
 import { prisma } from "@/database/db";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import {
   CloudinaryUploadResult,
   uploadToCloudinary,
@@ -149,7 +149,7 @@ export const POST = async (req: NextRequest) => {
 //       orderBy: {
 //         createdAt: "desc"
 //       }
-//     })    
+//     })
 //     return NextResponse.json(properties);
 //   } catch (error) {
 //     console.log(error);

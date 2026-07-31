@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  approveProperty,
-  rejectProperty,
-} from "@/server-actions/adminPropertyActions";
+  approvePropertyAction,
+  rejectPropertyAction,
+} from "@/server-actions/admin/property.actions";
 
 export const useApproveProperty = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (propertyId: string) => approveProperty(propertyId),
+    mutationFn: (propertyId: string) => approvePropertyAction(propertyId),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -28,7 +28,7 @@ export const useRejectProperty = () => {
     }: {
       propertyId: string;
       reason: string;
-    }) => rejectProperty(propertyId, reason),
+    }) => rejectPropertyAction(propertyId, reason),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

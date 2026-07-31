@@ -1,5 +1,5 @@
 import { prisma } from "@/database/db";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -7,10 +7,7 @@ export async function POST(req: NextRequest) {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const { propertyId } = await req.json();
@@ -18,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!propertyId) {
       return NextResponse.json(
         { message: "propertyId is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -75,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

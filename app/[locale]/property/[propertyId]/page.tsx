@@ -3,13 +3,13 @@ import Navbar from "@/components/navbar/Navbar";
 import EmailForm from "@/components/properties/EmailForm";
 import ContactSellerButton from "@/components/properties/ContactSellerButton";
 import PropertyPageSkeleton from "@/components/skeletons/PropertyPageSkeleton";
-import { getProperty } from "@/server-actions/getProperty";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Suspense } from "react";
 import { FaMapMarkerAlt, FaRulerCombined } from "react-icons/fa";
 import { LuBath, LuBedDouble } from "react-icons/lu";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
+import { getProperty } from "@/services/property.service";
 
 export const formatPrice = (price: number | string) => {
   return Number(price).toLocaleString();

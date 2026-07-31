@@ -1,12 +1,12 @@
 "use client";
 
-import { getNotifications } from "@/server-actions/notification.actions";
+import { getNotificationsAction } from "@/server-actions/notification.actions";
 import { useQuery } from "@tanstack/react-query";
 
 export function useNotifications() {
   return useQuery({
     queryKey: ["notifications"],
 
-    queryFn: () => getNotifications(),
+    queryFn: () => getNotificationsAction(),
   });
 }

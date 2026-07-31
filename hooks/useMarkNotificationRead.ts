@@ -4,13 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 import { Notification } from "@/types/notification";
-import { markNotificationRead } from "@/server-actions/notification.actions";
+import { markNotificationReadAction } from "@/server-actions/notification.actions";
 
 export function useMarkNotificationRead() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: markNotificationRead,
+    mutationFn: markNotificationReadAction,
 
     onMutate: async (notificationId) => {
       await queryClient.cancelQueries({ queryKey: ["notifications"] });

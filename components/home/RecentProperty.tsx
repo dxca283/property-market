@@ -1,8 +1,8 @@
-import { getRecentProperties } from "@/server-actions/getRecentProperties";
 import PropertyCard from "../properties/PropertyCard";
 import { Suspense } from "react";
 import CardSkeleton from "../skeletons/CardSkeleton";
 import { getTranslations } from "next-intl/server";
+import { getRecentProperties } from "@/services/property.service";
 
 const RecentProperty = async () => {
   const t = await getTranslations("home");

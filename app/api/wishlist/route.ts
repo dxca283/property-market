@@ -1,5 +1,5 @@
 import { prisma } from "@/database/db";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -23,9 +23,9 @@ export async function GET(req: NextRequest) {
       },
       orderBy: {
         createdAt: "desc",
-      }
+      },
     });
-    
+
     const data = wishlist.map((item) => item.property);
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
