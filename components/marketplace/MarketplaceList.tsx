@@ -39,8 +39,8 @@ export default function MarketplaceList({ searchParams, initialData }: Marketpla
         }
       },
       {
-        rootMargin: "0px",
-        threshold: 0.5,
+        rootMargin: "100px",
+        threshold: 0,
       }
     );
 
