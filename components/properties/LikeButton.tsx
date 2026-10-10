@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { Heart } from "lucide-react";
 import { Property } from "@/types/property";
 import { useToggleLike } from "@/hooks/useToggleLike";
-import { useQueryClient } from "@tanstack/react-query";
 import { useWishlist } from "@/hooks/useWishList";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";

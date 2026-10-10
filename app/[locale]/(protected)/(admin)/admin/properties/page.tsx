@@ -1,5 +1,4 @@
 import AdminProperties from "@/components/admin/AdminProperties";
-import MyProperties from "@/components/properties/MyProperties";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getTranslations } from "next-intl/server";
 

@@ -2,7 +2,6 @@
 
 import { SendMessageValues } from "@/schemas/message.schema";
 import { messageService } from "@/services/message.service";
-import { useChatStore } from "@/store/useChatStore";
 import {
   InfiniteData,
   useMutation,

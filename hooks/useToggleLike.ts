@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { wishlistService } from "../services/wishlist.service";
 import { Property } from "@/types/property";
-import toast from "react-hot-toast";
 
 export const useToggleLike = () => {
   const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { socket } from "@/lib/socket";
 import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { GetMessagesResponse, Message } from "@/types/message";
@@ -14,7 +14,7 @@ export const useRealtimeMessages = (conversationId: string | null) => {
   const { data: session } = authClient.useSession();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const debounceMarkRead = (id: string) => {
+  const debounceMarkRead = useCallback((id: string) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -22,7 +22,7 @@ export const useRealtimeMessages = (conversationId: string | null) => {
     timeoutRef.current = setTimeout(() => {
       mutate(id);
     }, 500);
-  };
+  }, [mutate]);
   useEffect(() => {
     if (!conversationId) return;
 
@@ -75,5 +75,5 @@ export const useRealtimeMessages = (conversationId: string | null) => {
         timeoutRef.current = null;
       }
     };
-  }, [conversationId, queryClient, session]);
+  }, [conversationId, debounceMarkRead, queryClient, session]);
 };

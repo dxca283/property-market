@@ -14,11 +14,7 @@ import { useMarkNotificationRead } from "@/hooks/useMarkNotificationRead";
 import { useMarkAllNotificationRead } from "@/hooks/useMarkAllNotificationRead";
 import { useTranslations } from "next-intl";
 
-export default function NotificationButton({
-  isTransparent = false,
-}: {
-  isTransparent?: boolean;
-}) {
+export default function NotificationButton() {
   const { data: notifications } = useNotifications();
   const { mutate: markRead } = useMarkNotificationRead();
   const { mutate: markAllRead } = useMarkAllNotificationRead();

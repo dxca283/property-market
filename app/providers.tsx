@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SocketProvider from "@/providers/SocketProvider";
 import RealtimeProvider from "@/providers/RealtimeProvider";

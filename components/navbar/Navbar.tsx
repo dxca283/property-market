@@ -95,7 +95,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
           {/* Desktop buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            {session && <NotificationButton isTransparent={isTransparent} />}
+            {session && <NotificationButton />}
             <LanguageSwitcher />
             {session ? (
               <DropdownMenu>
@@ -117,7 +117,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                       <FaHome className="mr-2" /> {t("addProperty")}
                     </DropdownMenuItem>
                   )}
-                  {("role" in session.user && session.user.role === "ADMIN") && (
+                  {session?.user && "role" in session.user && session.user.role === "ADMIN" && (
                     <DropdownMenuItem onClick={() => router.push("/admin")} className="cursor-pointer">
                       <FaCog className="mr-2" /> {t("adminDashboard")}
                     </DropdownMenuItem>
@@ -137,7 +137,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
           {/*mobile menu button */}
           <div className="flex items-center gap-2 lg:hidden">
-            {session && <NotificationButton isTransparent={isTransparent} />}
+            {session && <NotificationButton />}
             <button
               className={`flex h-11 w-11 items-center justify-center rounded-2xl transition ${isTransparent ? "border border-white/10 bg-white/5 text-white" : "border border-black/10 bg-background text-text"}`}
               onClick={() => setIsOpen(!isOpen)}
@@ -198,7 +198,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   </Button>
                 )}
 
-                {("role" in session.user && session.user.role === "ADMIN") && (
+                {session?.user && "role" in session.user && session.user.role === "ADMIN" && (
                   <Button
                     icon={<FaCog />}
                     iconPosition="left"

@@ -4,7 +4,7 @@ import { prisma } from "@/database/db";
 import { sendMessageSchema } from "@/schemas/message.schema";
 import { z } from "zod";
 import { socketServer } from "@/lib/sockerServer";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/app/generated/prisma/client";
 
 class HttpError extends Error {
   constructor(
