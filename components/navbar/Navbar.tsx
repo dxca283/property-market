@@ -117,7 +117,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                       <FaHome className="mr-2" /> {t("addProperty")}
                     </DropdownMenuItem>
                   )}
-                  {(session?.user as any)?.role === "ADMIN" && (
+                  {("role" in session.user && session.user.role === "ADMIN") && (
                     <DropdownMenuItem onClick={() => router.push("/admin")} className="cursor-pointer">
                       <FaCog className="mr-2" /> {t("adminDashboard")}
                     </DropdownMenuItem>
@@ -198,7 +198,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   </Button>
                 )}
 
-                {(session?.user as any)?.role === "ADMIN" && (
+                {("role" in session.user && session.user.role === "ADMIN") && (
                   <Button
                     icon={<FaCog />}
                     iconPosition="left"

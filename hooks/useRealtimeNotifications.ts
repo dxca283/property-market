@@ -4,12 +4,13 @@ import { useEffect } from "react";
 import { socket } from "@/lib/socket";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { Notification } from "@/types/notification";
 
 export function useRealtimeNotifications() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const handleNotification = (notification: any) => {
+    const handleNotification = (notification: Notification) => {
       console.log("🔥 notification:new", notification);
       queryClient.setQueryData<Notification[]>(
         ["notifications"],
@@ -20,7 +21,7 @@ export function useRealtimeNotifications() {
           }
 
           // Prevent duplicate keys if event is fired multiple times
-          if (old.some((n: any) => n.id === notification.id)) {
+          if (old.some((n) => n.id === notification.id)) {
             return old;
           }
 

@@ -4,6 +4,7 @@ import { prisma } from "@/database/db";
 import { sendMessageSchema } from "@/schemas/message.schema";
 import { z } from "zod";
 import { socketServer } from "@/lib/sockerServer";
+import { Prisma } from "@prisma/client";
 
 class HttpError extends Error {
   constructor(
@@ -99,8 +100,11 @@ export async function POST(req: Request) {
                 sellerId: property.ownerId,
               },
             });
-          } catch (e: any) {
-            if (e.code === "P2002") {
+          } catch (error: unknown) {
+            if (
+              error instanceof Prisma.PrismaClientKnownRequestError &&
+              error.code === "P2002"
+            ) {
               conversation = await tx.conversation.findUnique({
                 where: {
                   propertyId_buyerId: {
@@ -114,7 +118,7 @@ export async function POST(req: Request) {
                 throw new HttpError(500, "Failed to retrieve conversation");
               }
             } else {
-              throw e;
+              throw error;
             }
           }
         }
@@ -207,7 +211,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(result);
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

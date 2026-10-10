@@ -1,6 +1,7 @@
 import { prisma } from "@/database/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 
 export async function POST(req: Request) {
   try {
@@ -73,8 +74,11 @@ export async function POST(req: Request) {
             sellerId: property.ownerId,
           },
         });
-      } catch (e: any) {
-        if (e.code === "P2002") {
+      } catch (error: unknown) {
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === "P2002"
+        ) {
           conversation = await prisma.conversation.findUnique({
             where: {
               propertyId_buyerId: {
@@ -84,7 +88,7 @@ export async function POST(req: Request) {
             },
           });
         } else {
-          throw e;
+          throw error;
         }
       }
     }

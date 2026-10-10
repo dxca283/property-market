@@ -34,7 +34,7 @@ const MessageList = () => {
     oldScrollHeight: 0,
   });
 
-  if (stateRef.current.conversationId !== selectedConversationId) {
+  useLayoutEffect(() => {
     stateRef.current = {
       conversationId: selectedConversationId,
       pagesLength: 0,
@@ -42,11 +42,7 @@ const MessageList = () => {
       hasInitialScrolled: false,
       oldScrollHeight: 0,
     };
-  }
-
-  if (scrollRef.current) {
-    stateRef.current.oldScrollHeight = scrollRef.current.scrollHeight;
-  }
+  }, [selectedConversationId]);
 
   useLayoutEffect(() => {
     const scrollEl = scrollRef.current;
@@ -140,7 +136,13 @@ const MessageList = () => {
   const reversedPages = [...data.pages].reverse();
 
   return (
-    <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto">
+    <div
+      ref={scrollRef}
+      onScroll={(event) => {
+        stateRef.current.oldScrollHeight = event.currentTarget.scrollHeight;
+      }}
+      className="flex-1 min-h-0 overflow-y-auto"
+    >
       <div className="flex flex-col gap-3 p-4">
         <div ref={sentinelRef} className="h-1 w-full shrink-0" />
 

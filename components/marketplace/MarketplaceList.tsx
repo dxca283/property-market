@@ -4,13 +4,13 @@ import { useProperties } from "@/hooks/useProperties";
 import PropertyCard from "../properties/PropertyCard";
 import EmptyState from "../ui/EmptyState";
 import { useTranslations } from "next-intl";
-import { GetPropertiesParams } from "@/types/property";
+import { GetPropertiesParams, PropertiesResponse } from "@/types/property";
 import { useEffect, useRef } from "react";
 import { Loader2, Plus } from "lucide-react";
 
 interface MarketplaceListProps {
   searchParams: GetPropertiesParams;
-  initialData: any;
+  initialData: PropertiesResponse;
 }
 
 export default function MarketplaceList({ searchParams, initialData }: MarketplaceListProps) {
