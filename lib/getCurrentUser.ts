@@ -3,8 +3,9 @@ import { getAuth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export const getCurrentUser = async () => {
+  const requestHeaders = await headers();
   const session = await getAuth().api.getSession({
-    headers: await headers(),
+    headers: requestHeaders,
   });
   if (!session?.user.id) {
     return null;
