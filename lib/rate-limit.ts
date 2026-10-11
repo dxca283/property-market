@@ -1,4 +1,4 @@
-import { redis } from "./redis";
+import { getRedis } from "./redis";
 
 interface RateLimitOptions {
   key: string;
@@ -36,7 +36,7 @@ export async function rateLimit({
   limit,
   window,
 }: RateLimitOptions): Promise<RateLimitResult> {
-  const result = (await redis.eval(rateLimitScript, [key], [window])) as [
+  const result = (await getRedis().eval(rateLimitScript, [key], [window])) as [
     number,
     number,
   ];

@@ -1,10 +1,9 @@
-import { auth } from "@/lib/auth"; // path to your auth file
+import { getAuth } from "@/lib/auth"; // path to your auth file
 import { checkLoginRateLimit } from "@/lib/rate-limiters/auth-login";
 import { toNextJsHandler } from "better-auth/next-js";
 
-const handler = toNextJsHandler(auth);
-
 export async function POST(request: Request) {
+  const handler = toNextJsHandler(getAuth());
   const url = new URL(request.url);
 
   /**
@@ -70,4 +69,7 @@ export async function POST(request: Request) {
   return handler.POST(request);
 }
 
-export const GET = handler.GET;
+export async function GET(request: Request) {
+  const handler = toNextJsHandler(getAuth());
+  return handler.GET(request);
+}

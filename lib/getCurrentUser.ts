@@ -1,9 +1,9 @@
 import "server-only";
-import { auth } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export const getCurrentUser = async () => {
-  const session = await auth.api.getSession({
+  const session = await getAuth().api.getSession({
     headers: await headers(),
   });
   if (!session?.user.id) {

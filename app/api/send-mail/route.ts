@@ -1,5 +1,5 @@
 import InquiryEmail from "@/components/emails/InquiryEmail";
-import { resend } from "@/lib/resend";
+import { getResend } from "@/lib/resend";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -17,7 +17,7 @@ export const POST = async (req: NextRequest) => {
     } = body;
 
     //send the email
-    resend.emails.send({
+    await getResend().emails.send({
       from: process.env.EMAIL_FROM!,
       subject: `Property Inquiry From ${senderName}`,
       react: InquiryEmail({

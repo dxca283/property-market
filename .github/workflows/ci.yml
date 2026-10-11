@@ -25,14 +25,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Prisma client
-        run: npx prisma generate
-
       - name: Lint
         run: npm run lint
 
       - name: Type check
         run: npx tsc --noEmit
+
+      - name: Validate public build configuration
+        run: test -n "$NEXT_PUBLIC_SOCKET_URL"
+        env:
+          NEXT_PUBLIC_SOCKET_URL: ${{ vars.NEXT_PUBLIC_SOCKET_URL }}
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SOCKET_URL: ${{ vars.NEXT_PUBLIC_SOCKET_URL }}
 
   publish:
     name: Build and Publish Docker Image
@@ -75,7 +82,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_SOCKET_URL=${{ vars.NEXT_PUBLIC_SOCKET_URL }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secret-files: |
-            env=./.env.ci

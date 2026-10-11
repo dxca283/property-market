@@ -1,10 +1,10 @@
 "use server"
-import { auth } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { approvePropertyService, rejectPropertyService } from "@/services/property.service";
 
 async function requireAdmin() {
-  const session = await auth.api.getSession({
+  const session = await getAuth().api.getSession({
     headers: await headers(),
   });
 
