@@ -14,6 +14,9 @@ function createAuth() {
     database: prismaAdapter(prisma, {
       provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
+    trustedOrigin: [
+      process.env.BETTER_AUTH_URL,
+    ],
     secret,
     baseURL,
     user: {
