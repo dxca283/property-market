@@ -1,0 +1,93 @@
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Full 40-character commit SHA already published to GHCR"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy property-market to EC2
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate commit SHA
+        env:
+          MANUAL_SHA: ${{ inputs.commit_sha }}
+        run: |
+          set -eu
+
+          SHA="$MANUAL_SHA"
+
+          if ! printf '%s' "$SHA" | grep -Eq '^[0-9a-f]{40}$'; then
+            echo "ERROR: Expected a full 40-character lowercase commit SHA."
+            exit 1
+          fi
+
+          echo "PROPERTY_MARKET_TAG=sha-$SHA" >> "$GITHUB_ENV"
+
+      - name: Deploy to EC2 and verify HTTP
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          PROPERTY_MARKET_TAG: ${{ env.PROPERTY_MARKET_TAG }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: PROPERTY_MARKET_TAG
+          command_timeout: 5m
+          script: |
+            set -eu
+
+            cd ~/real-estate-system
+            export PROPERTY_MARKET_TAG
+
+            echo "Checking Docker Compose configuration..."
+            docker compose config -q
+
+            echo "Pulling property-market:$PROPERTY_MARKET_TAG"
+            docker compose pull next-app
+
+            echo "Updating next-app only..."
+            docker compose up -d --no-deps next-app
+
+            echo "Checking container status..."
+            CONTAINER_ID="$(docker compose ps -q next-app)"
+            test -n "$CONTAINER_ID"
+
+            STATUS="$(docker inspect --format '{{.State.Status}}' "$CONTAINER_ID")"
+            if [ "$STATUS" != "running" ]; then
+              docker compose logs --tail=100 next-app
+              echo "ERROR: Container status is $STATUS"
+              exit 1
+            fi
+
+            echo "Checking HTTP response..."
+            HEALTHY=0
+
+            for attempt in $(seq 1 30); do
+              if curl -fsS --max-time 5 \
+                http://127.0.0.1:3000/ >/dev/null 2>&1; then
+                HEALTHY=1
+                break
+              fi
+              sleep 5
+            done
+
+            if [ "$HEALTHY" -ne 1 ]; then
+              docker compose ps
+              docker compose logs --tail=100 next-app
+              echo "ERROR: HTTP health check failed."
+              exit 1
+            fi
+
+            echo "SUCCESS: next-app is running and HTTP responded."
+            docker compose ps next-app
